@@ -1,0 +1,24 @@
+NOTES on Emacs extensions              -*- org -*-
+
+* Cscope
+
+In xcscope.el.
+Retrieved from <http://cvs.sourceforge.net/viewcvs.py/cscope/cscope/contrib/xcscope/>
+Also put cscope-indexer from same location into ~/local/bin.  The module recommends this script.
+
+If you do not use cscope-indexer, and you have files other than normally indexed by cscope,
+you should create a "cscope.files" file with the names of all indexed files.
+E.g. "echo *.c *.m *.h *.scm > cscope.files".  cscope automatically rebuilds the database
+when needed, and these files will be wiped out otherwise.  To disable this behavior, 
+(setq cscope-do-not-update-database t).  This will add "-d" to the cscope options.
+
+
+* Paredit
+
+Patched paredit-split-sexp to not delete horizontal space.
+
+* term/ directory
+
+Contains startup files for specific terminals.  For example, screen-256color.el enables
+256 colors in TERM=screen-256color by loading the xterm 256 color code (this crap is
+hardcoded in emacs).

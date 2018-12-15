@@ -1,0 +1,51 @@
+emacsforosx startup is slow (0.12s penalty) apparently because it calls a ruby script ("Emacs") to find the right version.
+If you call it directly, it starts up essentially as fast as the homebrew non-windowed version.
+    /Applications/Emacs.app/Contents/MacOS/Emacs-x86_64-10_10 -nw
+
+
+"esup" package will profile your emacs startup but requires GUI emacs. (`open -a emacs` is fine.)
+
+
+$ time emacs -l ~/.emacs --batch --eval '(message "Hi")'
+        1.00 real                                                    # emacsforosx 25.3
+        0.74 real                                                    # emacsforosx 26.1
+        0.62 real         0.55 user         0.05 sys                 # homebrew 26.1 (non-Cocoa)
+        0.59 real         0.55 user         0.05 sys                 # homebrew 26.1, .emacs byte-compiled
+
+$ time emacs --batch --eval '(message "Hi")'   # i.e. no startup file
+        0.13 real                                                    # emacsforosx 25.3 / 26.1
+        0.02 real                                                    # homebrew 26.1
+        0.03 real                                                    # emacsforosx 26.1, if called directly
+
+
+
+
+* Esup results
+
+Total User Startup Time: 0.562sec     Total Number of GC Pauses: 12     Total GC Time: 0.205sec
+package.el:30  0.257sec   45% (package-initialize)
+.emacs:1516  0.104sec   18%   (ac-config-default)
+
+We need to concentrate on 3 things initially:
+1. package-initialize.  We are using an old version of package.el and I wrote some strange custom code. We need to completely redo this.
+2. ac-config-default
+3. GC. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+emacsclient -s   -- you can have multiple servers running
