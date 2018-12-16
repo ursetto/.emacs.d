@@ -17,7 +17,7 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 ;; add marmalade ELPA repo
 ;; FIXME: Use https: --- once bug fixed in emacs 24.4 to allow direct https access
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (when (< emacs-major-version 24)
