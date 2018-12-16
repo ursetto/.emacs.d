@@ -27,13 +27,26 @@ package.el:30  0.257sec   45% (package-initialize)
 .emacs:1516  0.104sec   18%   (ac-config-default)
 
 We need to concentrate on 3 things initially:
-1. package-initialize.  We are using an old version of package.el and I wrote some strange custom code. We need to completely redo this.
-2. ac-config-default
+1. package-initialize. Autoloads every installed package at startup. Unfortunately there is not much we can do about this,
+   other than reduce the number of installed packages, or upgrade to Emacs 27.
+2. ac-config-default (disabled)
 3. GC. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/.
 
 
 
+For package-initialize, most time is spent reading and executing autoload files (?). All autoloads for every single
+installed package are loaded. Not calling package-initialize will avoid this but the load paths won't be
+updated.  use-package will not help here. Using (package-initialize 'noactivate) reduces init time from 150ms to 100ms,
+but doesn't set load path --- what the heck is it doing then?? Setting (package-load-path '()) seems to do the same thing,
+where init time goes to 100ms.
+ - Actually, most time is spent loading descriptors and reading the archive file for each distribution -- MELPA's
+   archive is 1.2MB!
 
+
+- see if one or two particular packages are screwing up autoload time
+- byte-compile the autoloads (??)
+- use emacs 27 + package-quickstart to precompute a big fat autoloads file
+- replace package.el with straight.el  (requires much surgery)
 
 
 
