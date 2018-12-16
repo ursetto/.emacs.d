@@ -12,6 +12,16 @@
 ;; [This is done in my/package.el for now.]
 ; (package-initialize)
 
+;; Changing gc size and nulling handler list saves about 150 ms in startup costs.
+(defvar gc-cons-threshold--orig gc-cons-threshold)
+(defvar file-name-handler-alist--orig file-name-handler-alist)
+(setq gc-cons-threshold 50000000
+      file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook      ; reset these after we are done
+          (lambda ()
+            (setq gc-cons-threshold gc-cons-threshold--orig
+                  file-name-handler-alist file-name-handler-alist--orig)))
+
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (autoload 'lisppaste "lisppaste"      ;; Use M-x lisppaste to start
  "Major mode for interacting with the lisppaste bot." t)
@@ -24,7 +34,7 @@
 ;(defalias 'perl-mode 'cperl-mode)
 
 ;; Configure and load ELPA (M-x list-packages).  Uses the global install.
-(load-file "~/.emacs.d/my/package.el")
+(load-file (locate-user-emacs-file "my/package.el"))
 
 ;;;; org-mode
 ;; -- ELPA version now used, local install disabled
@@ -774,13 +784,16 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;;        C-t (toggle regexp match)
 ;;        TAB/? (full completion list, when no completions)
 
+;; FIXME: should be autoloaded, or loaded after startup, just so package-initialize can work
+;;        when called at the end of startup. (Although we call package-initialize earlier.)
+;; NOTE: This adds 50 ms to startup, and ido-ubiquitous-mode adds another 30 ms.
 (ido-mode t)                               ;; supersedes iswitchb-mode
 ;; (setq ido-max-prospects 12)             ;; max # of matching items
 ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
 ;;                                         ;; C-j or C-d is better option to get into dired.
 ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
 (setq ido-enable-tramp-completion nil)     ;; temporary, just because I don't use tramp
-(ido-ubiquitous-mode t)                    ;; Use ido everywhere (external library)
+;;(ido-ubiquitous-mode t)                    ;; Use ido everywhere (external library)
 
 ;;;; smex
 
@@ -1512,8 +1525,8 @@ is called as a function to find the defun's beginning."
 
 ;;;; ocaml
 
-(require 'auto-complete)
-(ac-config-default)
+;;;;;;(require 'auto-complete)
+;;;;;;(ac-config-default)
 
 ;; Requires MELPA packages auto-complete, tuareg, utop and merlin;
 ;; also `opam install merlin`.
