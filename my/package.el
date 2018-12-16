@@ -14,15 +14,15 @@
 
 (require 'package)
 ;; add org ELPA repo (note that org base is included in marmalade repo as well)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 ;; add marmalade ELPA repo
 ;; FIXME: Use https: --- once bug fixed in emacs 24.4 to allow direct https access
 ;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib (recommended by MELPA)
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
 
 (if (boundp 'package-enable-at-startup)
     (setq package-enable-at-startup nil))
