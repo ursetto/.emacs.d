@@ -1,0 +1,16 @@
+*.elc
+*.orig
+.DS_Store
+*~
+
+arch/
+build/
+desktops/
+elpa/
+old/
+RCS/
+
+
+network-security.data
+smex-items
+
