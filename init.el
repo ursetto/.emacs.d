@@ -12,6 +12,8 @@
 ;; [This is done in my/package.el for now.]
 ; (package-initialize)
 
+(setq inhibit-startup-screen t)
+
 ;; Changing gc size and nulling handler list saves about 150 ms in startup costs.
 (defvar gc-cons-threshold--orig gc-cons-threshold)
 (defvar file-name-handler-alist--orig file-name-handler-alist)
