@@ -22,3 +22,12 @@ Patched paredit-split-sexp to not delete horizontal space.
 Contains startup files for specific terminals.  For example, screen-256color.el enables
 256 colors in TERM=screen-256color by loading the xterm 256 color code (this crap is
 hardcoded in emacs).
+
+
+* use-package
+
+Example config of use-package is at https://github.com/CSRaghunandan/.emacs.d
+
+Since package-initialize takes much more time than the .emacs startup
+itself, there is little advantage to switching to use-package other than
+cleaning up the config.
