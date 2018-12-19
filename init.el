@@ -76,15 +76,11 @@
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (setq aw-background nil)
   (setq aw-dispatch-always nil)
-  (setq aw-dispatch-alist
-        ;; Meta keys do not work here.
-        (append
-         `((?o aw-flip-window)  ;; Pops aw ring---last win you switched to *with aw*.
-           (?t aw-split-window-fair "Split window fairly")
-           (?= balance-windows)               ; C-x +
-           )
-         aw-dispatch-alist))
-  )
+  ;; Meta keys do not work in aw-dispatch-alist
+  (add-to-list 'aw-dispatch-alist '(?o aw-flip-window)) ;; Pops aw ring! Ignores window motion outside aw.
+  (add-to-list 'aw-dispatch-alist '(?t aw-split-window-fair "Split window fairly"))
+  (add-to-list 'aw-dispatch-alist '(?= balance-windows))  ; C-x +
+)  
 
 ;;;; magit
 (global-set-key "\C-cm" 'magit-status)
