@@ -12,9 +12,25 @@
   :config
   (setq windmove-wrap-around t))
 
-(use-package hydra)  ;; FIXME: raise to init.el
+(use-package ace-window
+  ;; M-o is bound to package facemenu (??)
+  :bind (("M-o" . ace-window))
+  :config
+  (setq aw-scope 'frame)        ;; Less confusing when multiple emacsclient ttys are active.
+  ;; Many extra ace-window commands (split, rebalance) can be
+  ;; done as easily with standard commands, especially when there are only two windows (delete-other), or with the mouse (shrink, enlarge).
+  ;; Binding other-window to dedicated keys, and windmove U/L/D/R bound to a hydra,
+  ;; might be good enough.
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-background nil)
+  (setq aw-dispatch-always nil)
+  ;; Meta keys do not work in aw-dispatch-alist
+  (add-to-list 'aw-dispatch-alist '(?o aw-flip-window)) ;; Pops aw ring! Ignores window motion outside aw.
+  (add-to-list 'aw-dispatch-alist '(?t aw-split-window-fair "Split window fairly"))
+  (add-to-list 'aw-dispatch-alist '(?= balance-windows))  ; C-x +
+)  
 
-(defhydra hydra-windows (global-map "C-c w"
+(defhydra hydra-windows (global-map "C-c w")
                                     ;; :timeout 5)
   "window"
   ("l" windmove-right)
@@ -25,8 +41,9 @@
   ("v" split-window-horizontally "vert")
   ("x" delete-window "del")
   ;("0" delete-window "del")
-  ("K" kill-this-buffer "kill")     ;; should this also close the window?
+  ("X" kill-this-buffer "kill")     ;; (d might be better) ;; should also close the window?
   ("b" bs-show "buffers" :color blue)  ;; exit immediately
+  ("s" save-buffer "save")
   ("q" nil)   ; comment to allow q to pass through (e.g. to help window)
   ("L" hydra-move-splitter-right "split>")
   ("H" hydra-move-splitter-left)

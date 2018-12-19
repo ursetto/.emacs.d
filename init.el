@@ -41,6 +41,8 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
+(use-package hydra)  ;; FIXME: raise to init.el
+
 (use-package avy
   :bind
   (("C-c '" . avy-goto-char-2)
@@ -62,25 +64,6 @@
   (defun avy-goto-paren-close ()
     (interactive)
     (avy--generic-jump ")\\|}\\|]" nil 'pre)))
-
-
-(use-package ace-window
-  ;; M-o is bound to package facemenu (??)
-  :bind (("M-o" . ace-window))
-  :config
-  (setq aw-scope 'frame)        ;; Less confusing when multiple emacsclient ttys are active.
-  ;; Many extra ace-window commands (split, rebalance) can be
-  ;; done as easily with standard commands, especially when there are only two windows (delete-other), or with the mouse (shrink, enlarge).
-  ;; Binding other-window to dedicated keys, and windmove U/L/D/R bound to a hydra,
-  ;; might be good enough.
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (setq aw-background nil)
-  (setq aw-dispatch-always nil)
-  ;; Meta keys do not work in aw-dispatch-alist
-  (add-to-list 'aw-dispatch-alist '(?o aw-flip-window)) ;; Pops aw ring! Ignores window motion outside aw.
-  (add-to-list 'aw-dispatch-alist '(?t aw-split-window-fair "Split window fairly"))
-  (add-to-list 'aw-dispatch-alist '(?= balance-windows))  ; C-x +
-)  
 
 ;;;; magit
 (global-set-key "\C-cm" 'magit-status)
