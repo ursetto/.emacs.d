@@ -38,11 +38,53 @@
 ;; Configure and load ELPA (M-x list-packages).  Uses the global install.
 (load-file (locate-user-emacs-file "my/package.el"))
 
-;;;; org-mode
-;; -- ELPA version now used, local install disabled
-;;(add-to-list 'load-path "~/.emacs.d/org-4.70")
-;; (add-to-list 'load-path "~/.emacs.d/org-6.34c/lisp")
-;; (require 'org-install)
+(eval-when-compile (require 'use-package))
+(setq use-package-always-ensure t)
+
+(use-package avy
+  :bind
+  (("C-c '" . avy-goto-char-2)
+   ("C-c /" . avy-goto-char-timer)   ;; conflict?
+   ("M-g M-g" . avy-goto-line)
+   ("M-g [" . avy-goto-paren-open)
+   ("M-g ]" . avy-goto-paren-close))
+  :config
+  (setq avy-style 'at-full)
+  (setq avy-styles-alist '((avy-goto-line . pre)))
+
+  (setq avy-indent-line-overlay t)
+  ;; (setq avy-all-windows nil)
+
+  (defun avy-goto-paren-open ()
+    (interactive)
+    (avy--generic-jump "(\\|{\\|\\[" nil 'pre))
+
+  (defun avy-goto-paren-close ()
+    (interactive)
+    (avy--generic-jump ")\\|}\\|]" nil 'pre)))
+
+
+(use-package ace-window
+  ;; M-o is bound to package facemenu (??)
+  :bind (("M-o" . ace-window))
+  :config
+  (setq aw-scope 'frame)        ;; Less confusing when multiple emacsclient ttys are active.
+  ;; Many extra ace-window commands (split, rebalance) can be
+  ;; done as easily with standard commands, especially when there are only two windows (delete-other), or with the mouse (shrink, enlarge).
+  ;; Binding other-window to dedicated keys, and windmove U/L/D/R bound to a hydra,
+  ;; might be good enough.
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-background nil)
+  (setq aw-dispatch-always nil)
+  (setq aw-dispatch-alist
+        ;; Meta keys do not work here.
+        (append
+         `((?o aw-flip-window)  ;; Pops aw ring---last win you switched to *with aw*.
+           (?t aw-split-window-fair "Split window fairly")
+           (?= balance-windows)               ; C-x +
+           )
+         aw-dispatch-alist))
+  )
 
 ;;;; magit
 (global-set-key "\C-cm" 'magit-status)
@@ -154,15 +196,7 @@
 (global-set-key "\C-x2" 'split-window-quietly-zb)   ;; see below
 (global-set-key "\C-c\C-j" 'imenu)           ;; jump to definition in this file (python binding; also used for org-goto)
 
-;;;;; Windmove bindings.
-;; I prefer C-l, C-h etc. but these are overridden by certain
-;; modes (e.g. cmuscheme, org).  One option is to use a special minor mode as in
-;; http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
-;; although lazy-loaded major modes may need to have this re-set after load.
-(global-set-key "\C-cl" 'windmove-right)
-(global-set-key "\C-ch" 'windmove-left)
-(global-set-key "\C-cj" 'windmove-down)
-(global-set-key "\C-ck" 'windmove-up)
+(load (locate-user-emacs-file "my/my-window.el"))  ;; TODO: replace with require
 
 ;;;; Aliases
 (defalias 'qrr 'query-replace-regexp)

@@ -58,7 +58,7 @@
     ("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt")))
  '(package-selected-packages
    (quote
-    (esup cargo company-quickhelp company company-ghci merlin auto-complete tuareg utop smex rust-mode org magit ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
+    (hydra ace-window use-package avy esup cargo company-quickhelp company company-ghci merlin auto-complete tuareg utop smex rust-mode org magit ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
  '(quack-default-program "\"~/scheme/xcode/Currency Converter/runapp\"")
  '(quack-fontify-style (quote plt))
  '(quack-pretty-lambda-p t)
@@ -344,6 +344,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "PT Mono" :height 100 :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal))))
+ '(avy-lead-face ((t (:background "color-124" :foreground "white"))))
+ '(avy-lead-face-0 ((t (:background "#e52b50" :foreground "white"))))
+ '(avy-lead-face-1 ((t (:background "color-240" :foreground "white"))))
+ '(avy-lead-face-2 ((t (:background "color-127" :foreground "white"))))
  '(bold ((t (:underline "cyan"))))
  '(caml-types-expr-face ((t (:background "#448822"))) t)
  '(comint-highlight-input ((t (:foreground "#0090ff"))))
