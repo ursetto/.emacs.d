@@ -66,7 +66,13 @@
     (avy--generic-jump ")\\|}\\|]" nil 'pre)))
 
 ;;;; magit
-(global-set-key "\C-cm" 'magit-status)
+;; Note: global-magit-file-mode is turned on by default, so these are
+;; automatically bound to C-x g, C-x M-g, and C-c M-g (magit-file-popup)
+;; in all file-visiting buffers. We should probably switch to those bindings,
+;; though Ctrl->Meta is torturous to type and could be changed in magit-file-mode-map.
+(global-set-key (kbd "C-x g") 'magit-status)   ;; was: C-c m
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)  ;; was: C-c C-m
+;; magit-status-mode-map: C-<tab> and M-<tab> are unreachable (section 4.2.2 Section Visibility). One of these should be set to C-c <tab>, at least. S-<tab> is reachable.
 
 ;;;; session
 (require 'session)             ;; save command and variable history across sessions
