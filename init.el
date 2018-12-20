@@ -41,7 +41,7 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
-(use-package hydra)  ;; FIXME: raise to init.el
+(use-package hydra)
 
 (use-package avy
   :bind
