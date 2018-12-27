@@ -3,6 +3,7 @@
 
 ;; M-x locate-library RET org RET : Get filesystem location of package "org"
 ;; M-x list-load-path-shadows : List Emacs Lisp files that shadow other files
+;; `kill -USR2 emacs-pid`  if Emacs hangs; then use `M-x toggle-debug-on-quit` afterward.
 
 ;;; Requires
 
@@ -73,6 +74,15 @@
 (global-set-key (kbd "C-x g") 'magit-status)   ;; was: C-c m
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)  ;; was: C-c C-m
 ;; magit-status-mode-map: C-<tab> and M-<tab> are unreachable (section 4.2.2 Section Visibility). One of these should be set to C-c <tab>, at least. S-<tab> is reachable.
+
+(use-package indent-tools
+  :bind (("C-c >" . indent-tools-hydra/body))
+  :config (use-package s)  ;; Required for up/down motion; not autoloaded
+  )
+(use-package undo-tree
+  ;; C-x u to visualize; p/n/b/f to navigate; d to diff; t for timestamps; C-q to abort; M-_ to redo
+  ;; Also see ~/.emacs.d/elpa/undo-tree-readme.txt
+  :init (global-undo-tree-mode))
 
 ;;;; session
 (require 'session)             ;; save command and variable history across sessions
