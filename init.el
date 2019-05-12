@@ -747,6 +747,19 @@ You can remove all indentation from a region by giving a large negative ARG."
 (setq org-agenda-start-on-weekday nil) ; start on today
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 
+(add-hook 'org-load-hook
+          ;; Similar to "n" but show a longer view by default, skip scheduled items, and
+          ;; skip empty dates. This has some aspects of the old 'timeline' view.
+          ;; (We might just want to set some of these options as default.)
+          (lambda ()
+            (add-to-list 'org-agenda-custom-commands
+                         '("L" "Long view"
+                           ((agenda ""
+                                    ((org-agenda-span 90) ; 'month
+                                     (org-agenda-show-all-dates nil)))
+                            (alltodo ""
+                                     ((org-agenda-todo-ignore-scheduled t))))))))
+
 (setq org-highest-priority ?A)
 (setq org-default-priority ?C)
 (setq org-lowest-priority ?E)

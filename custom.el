@@ -69,7 +69,9 @@
  '(quack-run-scheme-always-prompts-p t)
  '(safe-local-variable-values
    (quote
-    ((org-cycle-include-plain-lists . integrate)
+    ((org-agenda-show-all-dates)
+     (org-agenda-todo-ignore-scheduled . all)
+     (org-cycle-include-plain-lists . integrate)
      (outline-cycle-min-level . 4)
      (outline-cycle-min-level . 2))))
  '(tool-bar-mode nil)
