@@ -1413,6 +1413,7 @@ is called as a function to find the defun's beginning."
 
 (put 'dired-find-alternate-file 'disabled nil)   ; use 'a' to reuse dir buffer
 (define-key global-map "\C-x\C-j" 'dired-jump)   ; allow dired-jump before dired is loaded
+(autoload 'dired-jump "dired" "Load dired when dired-jump is used." t)
 
 ;; Load Dired-x when Dired is loaded.
 (add-hook 'dired-load-hook
@@ -1490,6 +1491,33 @@ is called as a function to find the defun's beginning."
           (switch-to-buffer filebuffer)                                    ; simply switch 
         (view-file file))                                                    ; ... view it
       (other-window -1))))                   ; give the attention back to the dired buffer
+
+;; https://stackoverflow.com/a/18885461/4289268
+;; Note 'dired-create-empty-file' will be available in emacs 27.1.
+(eval-after-load 'dired
+  '(progn
+     (define-key dired-mode-map (kbd "_") 'my-dired-create-empty-file)
+     (defun my-dired-create-empty-file (file)
+       "Create a file called FILE.
+If FILE already exists, signal an error."
+       (interactive
+        (list (read-file-name "Create file: " (dired-current-directory))))
+       (let* ((expanded (expand-file-name file))
+              (try expanded)
+              (dir (directory-file-name (file-name-directory expanded)))
+              new)
+         (if (file-exists-p expanded)
+             (error "Cannot create file %s: file exists" expanded))
+         ;; Find the topmost nonexistent parent dir (variable `new')
+         (while (and try (not (file-exists-p try)) (not (equal new try)))
+           (setq new try
+                 try (directory-file-name (file-name-directory try))))
+         (when (not (file-exists-p dir))
+           (make-directory dir t))
+         (write-region "" nil expanded t)
+         (when new
+           (dired-add-file new)
+           (dired-move-to-filename))))))
 
 ;;;; woman / man-mode
 
