@@ -93,6 +93,11 @@
 (add-to-list 'session-globals-exclude 'org-mark-ring)  ;; avoid infinite loop on exit
 (add-hook 'after-init-hook 'session-initialize)
 
+(use-package edit-indirect
+  ;; C-c C-c : commit     C-c C-k : abort     C-x C-s : update and continue
+  ;; To find existing buffer, select entire region and edit again. Consider implementing
+  ;; ability to autoselect region for editing when inside existing one.
+  :bind (("C-x n e" . edit-indirect-region)))
 
 ;;;; Possible future requires
 ;; hideshow-mode for lisp?
