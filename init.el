@@ -757,13 +757,13 @@ You can remove all indentation from a region by giving a large negative ARG."
           ;; skip empty dates. This has some aspects of the old 'timeline' view.
           ;; (We might just want to set some of these options as default.)
           (lambda ()
-            (add-to-list 'org-agenda-custom-commands
-                         '("L" "Long view"
+            (setq org-agenda-custom-commands    ;; not using add-to-list, may not be defined
+                         '(("L" "Long view"
                            ((agenda ""
                                     ((org-agenda-span 90) ; 'month
                                      (org-agenda-show-all-dates nil)))
                             (alltodo ""
-                                     ((org-agenda-todo-ignore-scheduled t))))))))
+                                     ((org-agenda-todo-ignore-scheduled t)))))))))
 
 (setq org-highest-priority ?A)
 (setq org-default-priority ?C)
