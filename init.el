@@ -1606,15 +1606,12 @@ If FILE already exists, signal an error."
 
 ;;;; ocaml
 
-;;;;;;(require 'auto-complete)
-;;;;;;(ac-config-default)
+;; Requires MELPA packages tuareg, utop and merlin; also `opam install
+;; merlin`. We use company-mode now as auto-complete is unmaintained,
+;; though the latter still works fine.
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'merlin-mode-hook 'company-mode)
 
-;; Requires MELPA packages auto-complete, tuareg, utop and merlin;
-;; also `opam install merlin`.
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist)) 
 ;; utop phrase eval doesn't seem to work (consistently evaluates much
 ;; smaller regions than expected.)  May be that tuareg-discover-phrase
 ;; is broken.
@@ -1627,22 +1624,20 @@ If FILE already exists, signal an error."
 ;; for some reason, you will probably want to set a trigger key via
 ;;    (ac-set-trigger-key "TAB"), or bind auto-complete to M-tab or C-c <tab>.
 ;; Alternatively just use 't mode to use your standard auto-complete config.
-;(setq merlin-ac-setup 'easy)
-(setq merlin-ac-setup t)
+;; Warning: Must manually autoload auto-complete-mode, or (setq auto-complete-mode t)
+;; in merlin-mode-hook, as merlin-ac will only be loaded after auto-complete is.
+;(setq merlin-ac-setup t) 
 
-;(add-hook 'tuareg-mode-hook 'merlin-mode)
-(add-hook 'tuareg-mode-hook
-          '(lambda ()
-             (merlin-mode)
-             ;;(local-set-key (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
-             ;;(local-set-key (kbd "C-c <down>") 'merlin-type-enclosing-go-down)
-             ))
-
-;; Can't get this to work regardless of what key it's on ... it just seems to
-;; cancel the type enclosing query. It worked once, but never again.
 (eval-after-load 'merlin
-  '(progn (define-key merlin-mode-map (kbd "M-<up>") 'merlin-type-enclosing-go-up)
-          (define-key merlin-mode-map (kbd "M-<down>") 'merlin-type-enclosing-go-down)))
+  '(progn
+     ;; Can't get this to work regardless of what key it's on ... it just seems to
+     ;; cancel the type enclosing query. It worked once, but never again.
+     (define-key merlin-mode-map (kbd "M-<up>") 'merlin-type-enclosing-go-up)
+     (define-key merlin-mode-map (kbd "M-<down>") 'merlin-type-enclosing-go-down)
+     ;; merlin-document is useful and not bound by default. Also see C-c C-l.
+     (define-key merlin-mode-map (kbd "C-c d") 'merlin-document)  ; or C-c m d
+     ;; merlin-jump may also be worth binding. Try C-c m j, or C-c C-j.
+     ))
              
 ;; (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 
