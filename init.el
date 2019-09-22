@@ -980,18 +980,30 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;;   in the echo area, even when company isn't running, and I don't know why.
 
 (autoload 'company-ghci "company-ghci" nil t)
+;; Most of these are not Haskell-mode specific, and should be moved to the company-mode section.
 (with-eval-after-load 'company
   (push 'company-ghci company-backends)
   (setq company-idle-delay 0.2) ;; Complete fast enough to avoid need for company-complete binding
   ;; Use TAB to also cycle through completions instead of just completing common part.
+  ;; Disallow RET from completing selection, as I often hit RET at EOL.
+  ;; Move completion of selection to M-/ (M- already held if using M-n/M-p.)
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map [return] nil)
+  (define-key company-active-map "M-/" 'company-complete-selection)
+  ;; Alternate behaviors: 1) have TAB complete selection, do not allow complete common (like Atom).
+  ;;  2) have TAB complete common, then complete selection instead of cycling. Would need a custom
+  ;;     function for this.
+  ;; TODO: Consider raising company-idle-delay back to 0.5 and allowing completion begin on TAB, for
+  ;; less popup distraction. This may impact indentation.
+
   (setq company-dabbrev-downcase nil) ;; Prevent lowercasing identifiers in comments.
-  (setq company-require-match 'never) ;; After <tab>, allow any non-match character to break out of completion.
-  
+  (setq company-require-match nil) ;; Allow any non-match character to break out of completion.
   ;; Use M-/ to complete a word in code that hasn't been loaded yet. Needed because
   ;; dabbrev-code only lets you complete valid identifiers, and it's not valid until
-  ;; saved and loaded into the interactive session.
+  ;; saved and loaded into the interactive session. May no longer be valid now that we have
+  ;; moved company-complete-selection to M-/.
 
   )  ; Assume ok to activate this globally. See [limit backend] below.
 (add-hook 'haskell-mode-hook
