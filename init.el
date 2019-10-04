@@ -845,7 +845,7 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
 ;;                                         ;; C-j or C-d is better option to get into dired.
 ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
-(setq ido-enable-tramp-completion nil)     ;; temporary, just because I don't use tramp
+(setq ido-enable-tramp-completion t)
 ;;(ido-ubiquitous-mode t)                    ;; Use ido everywhere (external library)
 
 ;;;; smex
