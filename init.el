@@ -1272,10 +1272,7 @@ is called as a function to find the defun's beginning."
 
 ;;;; VC
 
-(setq vc-rcs-checkin-switches "-l")   ;; automatically checkout and lock file after checkin
-                                      ;; Modeline won't always be updated with :.
-(setq vc-handled-backends '(RCS))     ;; Only allow Emacs VC for RCS.  I prefer to manage
-                                      ;; CVS and SVN from the command line.
+(setq vc-handled-backends nil)   ;; Use dedicated packages (like magit) for version control.
 
 ;;;; Gforth
 
@@ -1676,9 +1673,9 @@ If FILE already exists, signal an error."
 (setq bookmark-save-flag 1)
 ;;;; tramp
 
-;(use-package tramp
-;  :config
-;  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+(use-package tramp
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;;; Custom
 
