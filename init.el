@@ -1065,6 +1065,11 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
           (lambda ()
             (idle-highlight-mode t)))
 
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
 ;;;; sepia
 
 ;; Note: this modification is loaded globally
@@ -1665,6 +1670,15 @@ If FILE already exists, signal an error."
 ;;;; rust-mode
 
 (add-hook 'rust-mode-hook 'cargo-minor-mode)
+
+;;;; bookmarks
+(setq bookmark-default-file (locate-user-emacs-file "bookmarks"))
+(setq bookmark-save-flag 1)
+;;;; tramp
+
+;(use-package tramp
+;  :config
+;  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;;; Custom
 
