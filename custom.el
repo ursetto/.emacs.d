@@ -59,7 +59,7 @@
     ("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt")))
  '(package-selected-packages
    (quote
-    (elpy pydoc flycheck undo-tree indent-tools hydra ace-window use-package avy esup cargo company-quickhelp company company-ghci merlin auto-complete tuareg utop smex rust-mode org magit ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
+    (yaml-mode elpy pydoc flycheck undo-tree indent-tools hydra ace-window use-package avy esup cargo company-quickhelp company company-ghci merlin auto-complete tuareg utop smex rust-mode org magit ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
  '(quack-default-program "\"~/scheme/xcode/Currency Converter/runapp\"")
  '(quack-fontify-style (quote plt))
  '(quack-pretty-lambda-p t)
