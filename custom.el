@@ -109,7 +109,7 @@
  '(error ((t (:background "color-88" :foreground "white" :weight bold))))
  '(font-lock-builtin-face ((((class color) (background dark)) (:foreground "#ddaaff"))))
  '(font-lock-comment-face ((t (:foreground "color-244"))))
- '(font-lock-constant-face ((t (:foreground "color-203"))))
+ '(font-lock-constant-face ((t (:foreground "color-204"))))
  '(font-lock-doc-face ((t (:foreground "color-202"))))
  '(font-lock-keyword-face ((t (:foreground "color-221"))))
  '(font-lock-string-face ((t (:foreground "color-121"))))
