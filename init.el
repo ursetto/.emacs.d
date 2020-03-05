@@ -1686,9 +1686,15 @@ If FILE already exists, signal an error."
 
 ;;;; rust-mode
 
+(use-package which-key
+  :config
+  (which-key-mode t))
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "M-l")  ;; overrides downcase-word
+  :config
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
   :hook (rust-mode . lsp))
 
 (use-package cargo
