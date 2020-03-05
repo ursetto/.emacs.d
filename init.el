@@ -1686,7 +1686,15 @@ If FILE already exists, signal an error."
 
 ;;;; rust-mode
 
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "M-l")  ;; overrides downcase-word
+  :hook (rust-mode . lsp))
+
+(use-package cargo
+  :hook (rust-mode . cargo-minor-mode))
+  
+(use-package rust-mode)
 
 ;;;; bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks"))
