@@ -1686,7 +1686,7 @@ If FILE already exists, signal an error."
 
 ;;;; rust-mode
 
-(use-package which-key
+(use-package which-key    ;; Display popup key bindings. Globally useful.
   :config
   (which-key-mode t))
 
@@ -1701,6 +1701,21 @@ If FILE already exists, signal an error."
   :hook (rust-mode . cargo-minor-mode))
   
 (use-package rust-mode)
+
+(use-package flycheck
+  :config
+  ;; Use C-c ! l to display error list.
+  (add-to-list 'display-buffer-alist
+               ;; Always display flycheck window in the bottom 10% of the screen.
+               ;; This comes from the manual (https://www.flycheck.org/en/latest/user/error-list.html#tune-error-list-display)
+               `(,(rx bos "*Flycheck errors*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (side            . bottom)
+                 (reusable-frames . visible)
+                 (window-height   . 0.10)))   ;; use float for %age, integer for fixed # of lines
+  ;; (list-flycheck-errors)   ; does not work to display on flycheck startup
+  )
 
 ;;;; bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks"))
