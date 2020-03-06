@@ -991,7 +991,7 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
   (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map [return] nil)
-  (define-key company-active-map "M-/" 'company-complete-selection)
+  (define-key company-active-map (kbd "M-/") 'company-complete-selection)
   ;; Alternate behaviors: 1) have TAB complete selection, do not allow complete common (like Atom).
   ;;  2) have TAB complete common, then complete selection instead of cycling. Would need a custom
   ;;     function for this.
