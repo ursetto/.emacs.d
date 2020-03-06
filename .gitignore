@@ -9,8 +9,15 @@ desktops/
 elpa/
 old/
 RCS/
+transient/
 
 
+.org-id-locations
+ac-comphist.dat
+bookmarks
 network-security.data
 smex-items
 elpy/
+
+.lsp-session-v1
+tramp
