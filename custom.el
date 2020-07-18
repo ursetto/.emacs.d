@@ -115,7 +115,7 @@
  '(font-lock-string-face ((t (:foreground "color-121"))))
  '(font-lock-type-face ((t (:foreground "color-141"))))
  '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#00d0ff" :underline nil))))
- '(fringe ((((class color) (background dark)) (:background "#383838" :foreground "#aaaaaa"))))
+ '(fringe ((t (:background "#282828" :foreground "#aaaaaa"))))
  '(highlight ((t (:background "color-239"))))
  '(hl-line ((t (:inverse-video t))))
  '(ido-only-match ((((class color)) (:foreground "Green"))))
