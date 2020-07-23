@@ -107,7 +107,7 @@
  '(diff-added ((t (:inherit diff-changed :foreground "brightgreen"))))
  '(diff-removed ((t (:inherit diff-changed :foreground "brightred"))))
  '(error ((t (:background "color-88" :foreground "white" :weight bold))))
- '(font-lock-builtin-face ((((class color) (background dark)) (:foreground "#ddaaff"))))
+ '(font-lock-builtin-face ((t (:foreground "color-219"))))
  '(font-lock-comment-face ((t (:foreground "color-244"))))
  '(font-lock-constant-face ((t (:foreground "color-204"))))
  '(font-lock-doc-face ((t (:foreground "color-202"))))
