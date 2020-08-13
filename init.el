@@ -1717,6 +1717,9 @@ If FILE already exists, signal an error."
   ;; (list-flycheck-errors)   ; does not work to display on flycheck startup
   )
 
+(use-package flycheck-rust  ;; So flycheck understands the cargo workspace.
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
 ;;;; bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks"))
 (setq bookmark-save-flag 1)
