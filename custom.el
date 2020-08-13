@@ -54,6 +54,8 @@
  '(jit-lock-context-time 0.2)
  '(large-file-warning-threshold nil)
  '(markdown-command "multimarkdown")
+ '(mouse-wheel-progressive-speed nil)
+ '(mouse-wheel-scroll-amount (quote (1 ((shift) . 5) ((control)))))
  '(org-agenda-files
    (quote
     ("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt")))
@@ -107,11 +109,12 @@
  '(diff-added ((t (:inherit diff-changed :foreground "brightgreen"))))
  '(diff-removed ((t (:inherit diff-changed :foreground "brightred"))))
  '(error ((t (:background "color-88" :foreground "white" :weight bold))))
- '(font-lock-builtin-face ((t (:foreground "color-219"))))
+ '(font-lock-builtin-face ((t (:foreground "color-216"))))
  '(font-lock-comment-face ((t (:foreground "color-244"))))
  '(font-lock-constant-face ((t (:foreground "color-204"))))
  '(font-lock-doc-face ((t (:foreground "color-202"))))
  '(font-lock-keyword-face ((t (:foreground "color-221"))))
+ '(font-lock-preprocessor-face ((t (:inherit font-lock-builtin-face))))
  '(font-lock-string-face ((t (:foreground "color-121"))))
  '(font-lock-type-face ((t (:foreground "color-141"))))
  '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#00d0ff" :underline nil))))
