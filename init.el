@@ -1079,7 +1079,9 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;; have Py2 flake8 installed for --user and want to use Py3.
 ;; You can override elpy-syntax-check-command to use the rpc venv like:
 
-;;   (setq elpy-syntax-check-command (concat elpy-rpc-virtualenv-path "/bin/" "flake8"))
+(defun elpy-py3 ()
+  (setq elpy-rpc-virtualenv-path "~/.emacs.d/elpy/rpc-venv3")
+  (setq elpy-syntax-check-command (concat elpy-rpc-virtualenv-path "/bin/" "flake8")))
 
 ;; although now it won't use the one in your current venv.
 
