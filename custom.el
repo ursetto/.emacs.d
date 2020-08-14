@@ -112,7 +112,7 @@
  '(font-lock-builtin-face ((t (:foreground "color-215"))))
  '(font-lock-comment-face ((t (:foreground "color-244"))))
  '(font-lock-constant-face ((t (:foreground "color-204"))))
- '(font-lock-doc-face ((t (:foreground "color-202"))))
+ '(font-lock-doc-face ((t (:foreground "color-139"))))
  '(font-lock-keyword-face ((t (:foreground "color-221"))))
  '(font-lock-preprocessor-face ((t (:inherit font-lock-builtin-face))))
  '(font-lock-string-face ((t (:foreground "color-121"))))
