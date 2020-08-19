@@ -1294,7 +1294,12 @@ is called as a function to find the defun's beginning."
 
 ;;;; VC
 
-(setq vc-handled-backends nil)   ;; Use dedicated packages (like magit) for version control.
+;; Set to nil to disable all VC mode backends and just use dedicated packages like magit for
+;; version control. This may speed up tramp remote operations. This may have unexpected
+;; consequences -- for example, project.el uses the VC backend to find the project root by
+;; default. In particular, disabling Git can prevent lsp and elgot from guessing the project root,
+;; so you can can reenable it in a mode hook for those.
+(setq vc-handled-backends nil)
 
 ;;;; Gforth
 
@@ -1697,7 +1702,12 @@ If FILE already exists, signal an error."
   (setq lsp-keymap-prefix "M-l")  ;; overrides downcase-word
   :config
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  :hook (rust-mode . lsp))
+  :hook (rust-mode . (lambda ()
+                       ;; Git VC backend lets lsp find our project root. Enable it in rust+lsp buffers,
+                       ;; as generic VC mode is usually disabled globally for performance.
+                       (if (null vc-handled-backends)
+                           (setq-local vc-handled-backends '(Git)))
+                       (lsp))))
 
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
