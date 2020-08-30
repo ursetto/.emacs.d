@@ -117,7 +117,7 @@
  '(font-lock-preprocessor-face ((t (:inherit font-lock-builtin-face))))
  '(font-lock-string-face ((t (:foreground "color-121"))))
  '(font-lock-type-face ((t (:foreground "color-147"))))
- '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "#00d0ff" :underline nil))))
+ '(font-lock-variable-name-face ((t (:foreground "color-153" :underline nil))))
  '(fringe ((t (:background "#282828" :foreground "#aaaaaa"))))
  '(highlight ((t (:background "color-237"))))
  '(hl-line ((t (:inverse-video t))))
