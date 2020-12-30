@@ -135,8 +135,12 @@
    ;; when MacOSX is in U.S. mode.  It works in U.S. Extended.  This only seems to be an
    ;; issue in Carbon Emacs, not Aquamacs.
 (global-font-lock-mode 1)
-(icomplete-mode 1)
-;; (iswitchb-mode t)            ;; Switch between buffers using substrings (see also icicle.el, ido-mode)
+(icomplete-mode 1)              ;; Completion of non-ido things like C-h v, C-h f
+;; (iswitchb-mode t)            ;; Switch between buffers using substrings (using ido-mode instead)
+;; Ignore these extensions during filename completion (works with ido and others).
+(add-to-list 'completion-ignored-extensions "~/")
+(add-to-list 'completion-ignored-extensions ".retry")
+(add-to-list 'completion-ignored-extensions "__pycache__/")
 (require 'scroll-bar)
 (scroll-bar-mode nil)
 (winner-mode t)                         ;; use C-c left/right to undo/redo window config
@@ -847,6 +851,7 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
 (setq ido-enable-tramp-completion t)
 ;;(ido-ubiquitous-mode t)                    ;; Use ido everywhere (external library)
+;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
 
 ;;;; smex
 
