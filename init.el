@@ -25,6 +25,13 @@
             (setq gc-cons-threshold gc-cons-threshold--orig
                   file-name-handler-alist file-name-handler-alist--orig)))
 
+;; Load customization file at start. If we load at end of file, any implicit updates to
+;; customized variables here are lost — it seems they are not written to disk immediately.
+;; In particular, use-package may modify package-selected-packages (via package-install);
+;; this update would be lost on load, causing package-autoremove to get out of sync.
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load-file custom-file)
+
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (autoload 'lisppaste "lisppaste"      ;; Use M-x lisppaste to start
  "Major mode for interacting with the lisppaste bot." t)
@@ -1745,13 +1752,6 @@ If FILE already exists, signal an error."
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-
-;;; Custom
-
-(custom-reset-variables            ; what the heck does this do
- '(org-allow-space-in-links nil))
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load-file custom-file)
 
 ;;; Random crap
 ;; insert test1 .. test5 into buffer
