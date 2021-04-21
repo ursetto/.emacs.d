@@ -98,7 +98,6 @@
 ;; hideshow-mode for lisp?
 ;; http://www.gentei.org/~yuuji/software/windows.el
 ;; http://www.gentei.org/~yuuji/software/revive.el
-;; (require 'breadcrumb)        ;; future -- cycle through bookmarks -- see breadcrumb.el (@ breadcrumb.sf.net)
 
 ;;--This was in here before, but I don't appear to use it.
 ;; (require 'filesets)
