@@ -5,13 +5,9 @@
 ;; M-x list-load-path-shadows : List Emacs Lisp files that shadow other files
 ;; `kill -USR2 emacs-pid`  if Emacs hangs; then use `M-x toggle-debug-on-quit` afterward.
 
-;;; Requires
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; [This is done in my/package.el for now.]
-; (package-initialize)
+;; Invoke early-init in versions that don't do so automatically.
+(when (version< emacs-version "27")
+  (load (locate-user-emacs-file "early-init.el")))
 
 (setq inhibit-startup-screen t)
 
@@ -33,6 +29,7 @@
 (load-file custom-file)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+
 (autoload 'lisppaste "lisppaste"      ;; Use M-x lisppaste to start
  "Major mode for interacting with the lisppaste bot." t)
 (autoload 'filladapt-mode "filladapt" ;; M-x filladapt-mode to enable minor mode
@@ -42,12 +39,6 @@
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
 (autoload 'sepia-init "sepia" "Emacs-Perl interaction REPL." t) ;; Use M-x sepia-init to start
 ;(defalias 'perl-mode 'cperl-mode)
-
-;; Configure and load ELPA (M-x list-packages).  Uses the global install.
-(load-file (locate-user-emacs-file "my/package.el"))
-
-(eval-when-compile (require 'use-package))
-(setq use-package-always-ensure t)
 
 (use-package hydra)
 
