@@ -1276,15 +1276,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 	  (lambda ()
 	    (setq comint-process-echoes t)))
 
-;;;; winring
-;; bug: when creating a new frame, current window config name will be
-;; changed to newly generated name for the new frame
-
-;; --- I never use winring.  Multiple frames seem to suffice.
-;; (require 'winring)             ;; C-x 7 C-h for help, or see winring.el
-;; (winring-initialize)
-;; (setq winring-show-names t)
-
 ;;;; Javascript
 
 ;; Using new espresso mode.  Mihai's JS mode is deprecated;
