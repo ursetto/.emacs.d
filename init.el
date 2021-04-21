@@ -30,8 +30,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-(autoload 'lisppaste "lisppaste"      ;; Use M-x lisppaste to start
- "Major mode for interacting with the lisppaste bot." t)
 (use-package filladapt :commands filladapt-mode)
 (autoload 'setnu-mode "setnu"
  "Display line numbers as in :set nu." t)
