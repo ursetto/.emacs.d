@@ -884,6 +884,7 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 	(process-send-string "*scheme*"
          (concat "(require-library chicken-doc) ,doc " func "\n")))))
 
+(use-package quack :defer t)
 (eval-after-load 'scheme
   '(progn
      (require 'quack)
