@@ -37,8 +37,6 @@
 (autoload 'setnu-mode "setnu"
  "Display line numbers as in :set nu." t)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
-(autoload 'sepia-init "sepia" "Emacs-Perl interaction REPL." t) ;; Use M-x sepia-init to start
-;(defalias 'perl-mode 'cperl-mode)
 
 (use-package hydra)
 
@@ -1084,41 +1082,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
   ;; A mixed Py2/3 environment does not work well; just use 3 now. Py2 programs
   ;; should be written to be syntactically compatible with Python 3 anyway.
   (setq elpy-rpc-python-command "python3"))
-
-;;;; sepia
-
-;; Note: this modification is loaded globally
-
-;; Slight modification to beginning-of-defun-raw from lisp.el --
-;; prevents recursive call to this function when beginning-of-defun-function
-;; calls beginning-of-defun.  This may be fixed in recent CVS Emacs.
-
-(defun beginning-of-defun-raw (&optional arg)
-  "Move point to the character that starts a defun.
-This is identical to function `beginning-of-defun', except that point
-does not move to the beginning of the line when `defun-prompt-regexp'
-is non-nil.
-
-If variable `beginning-of-defun-function' is non-nil, its value
-is called as a function to find the defun's beginning."
-  (interactive "p")
-  (if beginning-of-defun-function
-      (let ((fn beginning-of-defun-function)
-	    (beginning-of-defun-function nil))
-       (if (> (setq arg (or arg 1)) 0)
-	   (dotimes (i arg)
-	     (funcall fn))
-	 ;; Better not call end-of-defun-function directly, in case
-	 ;; it's not defined.
-	 (end-of-defun (- arg))))
-    (and arg (< arg 0) (not (eobp)) (forward-char 1))
-    (and (re-search-backward (if defun-prompt-regexp
-				 (concat (if open-paren-in-column-0-is-defun-start
-					     "^\\s(\\|" "")
-					 "\\(?:" defun-prompt-regexp "\\)\\s(")
-			       "^\\s(")
-			     nil 'move (or arg 1))
-	 (progn (goto-char (1- (match-end 0)))) t)))
 
 ;;;; AUCTex
 
