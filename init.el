@@ -1390,15 +1390,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 			   t   ; replace
   ))
 
-;;;; ifm-mode
-
-;; -- NB If re-enabled, please convert to autoload.
-;; (require 'ifm-mode)     ;; Major mode for editing Interactive Fiction Mapper (IFM) maps
-;; ;; Use C-c C-m to rerun ifm.
-;; ;; Wrapper around Preview.app.  Preview will pop up but you
-;; ;; must hit Revert to update (I set this to Command-R in System Preferences).
-;; (setq ifm-viewer "~/local/bin/ifm-view")
-
 ;;;; dired-mode
 
 ;; Prefer 'gls' for dired, otherwise fall back to ls.
