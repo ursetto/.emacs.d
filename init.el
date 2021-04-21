@@ -854,20 +854,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;;  `M-.` jumps to the definition of the selected command.
 ;;  `C-h w` shows the key bindings for the selected command.
 
-;;;; cscope
-
-;; This takes some time at startup, so I'm requiring cc-mode be loaded
-;; beforehand.  This isn't the right solution.  Perhaps better would be
-;; load on "C-c s" prefix.  However, IIRC xscope does some weird
-;; autoloading internally.
-(eval-after-load "cc-mode"
- '(require 'xcscope))             ;; Cscope prefix: C-c s  (docs: ~/.emacs.d/xcscope.el)
-
-;; xcscope.el doesn't automatically load on ObjC code.
-;; If you don't want cscope mode to auto-load, you'll have to delete the hooks
-;; from the end of xcscope.el, and start it manually with (cscope:hook).
-(add-hook 'objc-mode-hook (function cscope:hook))
-
 ;;;; Scheme mode
 
 (add-hook 'scheme-mode-hook
