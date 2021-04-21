@@ -1281,10 +1281,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 ;  "Major mode for editing comma-separated value files." t)
 (setq csv-header-lines 1)    ;; Assume all csv files have a header, for auto region select
 
-;;;; w3m
-
-(autoload 'w3m-mode "w3m" "w3m-mode" t)
-
 ;;;; html-mode
 
 (defun html-tidy-buffer ()
