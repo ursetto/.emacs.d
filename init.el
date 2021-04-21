@@ -1274,22 +1274,6 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 	  (lambda ()
 	    (setq comint-process-echoes t)))
 
-;;;; css-mode
-
-;; Warning: Disabled; this code appears to be for the css-mode by
-;; Lars Marius Garshol, while the currently-loaded version is
-;; by Alex Schroder.
-;; (add-hook 'css-mode-hook
-;; 	  (lambda ()
-;;             (setq cssm-indent-function #'cssm-c-style-indenter)  ; or else indentation is bizarre
-;; 	    (setq cssm-indent-level 4)))
-;; (eval-after-load 'css-mode
-;; ;; 	    (define-key cssm-mode-map "\M-/" 'cssm-complete-property) ; overrides regular dabbrev; could use TAB
-;;  	    (define-key cssm-mode-map "\t" 'cssm-complete-property)
-;; 	    (define-key cssm-mode-map "\C-m" 'newline-and-indent)
-;; 	    (define-key cssm-mode-map "\C-j" 'newline))
-
-	  
 ;;;; csv-mode
 
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
