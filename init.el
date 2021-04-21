@@ -31,8 +31,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (use-package filladapt :commands filladapt-mode)
-(autoload 'setnu-mode "setnu"
- "Display line numbers as in :set nu." t)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
 
 (use-package hydra)
