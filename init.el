@@ -1075,34 +1075,24 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (idle-highlight-mode t)))
+            (idle-highlight-mode t)
+            ;; Default to Python 3 on Mac. Although "python" is correct after a `M-x pyvenv-activate`,
+            ;; outside of a venv "python" means Python 2 which is usually wrong.
+            (setq python-shell-interpreter "python3")))
 
+;; `M-x elpy-config` to sanity check your config.
+;; `pipx install flake8` to install python3 flake8 (it's not in the venv).
+;; `M-x elpy-rpc-reinstall-virtualenv` to rebuild the venv, which is likely to break after
+;; a `brew upgrade`. Don't forget `pipx reinstall-all` for flake8.
 (use-package elpy
   :ensure t
+  :defer t
   :init
-  (elpy-enable))
-
-;; We can change elpy from python2 to python3 (clunkily) by setting the rpc-virtualenv-path.
-
-;;   (setq elpy-rpc-virtualenv-path "~/.emacs.d/elpy/rpc-venv3")
-
-;; flake8 in RPC venv is not used -- the one in your path is. That is
-;; either the current venv, or the --user or global env. This is a problem if you
-;; have Py2 flake8 installed for --user and want to use Py3.
-;; You can override elpy-syntax-check-command to use the rpc venv like:
-
-(defun elpy-py3 ()
-  (setq elpy-rpc-virtualenv-path "~/.emacs.d/elpy/rpc-venv3")
-  (setq elpy-syntax-check-command (concat elpy-rpc-virtualenv-path "/bin/" "flake8")))
-
-;; although now it won't use the one in your current venv.
-
-;; elpy will automatically create this venv (but at creation time only, you must set rpc-python-command to python3).
-;;   (setq elpy-rpc-python-command "python3")                         ;; only needed at venv creation time
-;; You can override python-shell-interpreter to 'python3' but 'python' is ok as long as you 'pyvenv-activate' into a python3 venv for your program.
-
-;; M-x elpy-rpc-restart
-;; M-x pyvenv-activate   (./venv)
+  (advice-add 'python-mode :before 'elpy-enable)
+  :config
+  ;; A mixed Py2/3 environment does not work well; just use 3 now. Py2 programs
+  ;; should be written to be syntactically compatible with Python 3 anyway.
+  (setq elpy-rpc-python-command "python3"))
 
 ;;;; sepia
 
