@@ -32,8 +32,7 @@
 
 (autoload 'lisppaste "lisppaste"      ;; Use M-x lisppaste to start
  "Major mode for interacting with the lisppaste bot." t)
-(autoload 'filladapt-mode "filladapt" ;; M-x filladapt-mode to enable minor mode
- "Minor mode for smart guesses on fill-prefix and paragraph boundaries." t)
+(use-package filladapt :commands filladapt-mode)
 (autoload 'setnu-mode "setnu"
  "Display line numbers as in :set nu." t)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
