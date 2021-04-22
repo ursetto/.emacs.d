@@ -1,6 +1,6 @@
 ;;; gforth.el --- major mode for editing (G)Forth sources
 
-;; Copyright (C) 1995,1996,1997,1998,2000,2001,2003 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998,2000,2001,2003,2004,2007,2008 Free Software Foundation, Inc.
 
 ;; This file is part of Gforth.
 
@@ -59,15 +59,15 @@
 (if (not (boundp 'emacs-major-version))
     (defconst emacs-major-version
       (progn (string-match "^[0-9]+" emacs-version)
-	     (string-to-int (match-string 0 emacs-version)))))
-
-(defun forth-emacs-older (major minor)
-  (or (< emacs-major-version major)
-      (and (= emacs-major-version major) (< emacs-minor-version minor))))
+	     (string-to-number (match-string 0 emacs-version)))))
 
 ;; Code ripped from `subr.el' for compatability with Emacs versions
 ;; prior to 20.1
 (eval-when-compile 
+(defun forth-emacs-older (major minor)
+  (or (< emacs-major-version major)
+      (and (= emacs-major-version major) (< emacs-minor-version minor))))
+
   (if (forth-emacs-older 20 1)
       (progn
 	(defmacro when (cond &rest body)
@@ -79,8 +79,9 @@
 
 ;; `no-error' argument of require not supported in Emacs versions
 ;; prior to 20.4 :-(
+(eval-and-compile
 (defun forth-require (feature)
-  (condition-case err (require feature) (error nil)))
+    (condition-case err (require feature) (error nil))))
 
 (require 'font-lock)
 
@@ -273,7 +274,8 @@ PARSED-TYPE specifies what kind of text is parsed. It should be on of 'name',
 	  "case" "of" "?dup-if" "?dup-0=-if" "then" "endif" "until"
 	  "repeat" "again" "leave" "?leave"
 	  "loop" "+loop" "-loop" "next" "endcase" "endof" "else" "while" "try"
-	  "recover" "endtry" "assert(" "assert0(" "assert1(" "assert2(" 
+	  "recover" "endtry" "iferror" "restore" "endtry-iferror"
+	  "assert(" "assert0(" "assert1(" "assert2("
 	  "assert3(" ")" "<interpretation" "<compilation" "interpretation>" 
 	  "compilation>")
 	 compile-only (font-lock-keyword-face . 2))
@@ -415,7 +417,7 @@ INDENT1 and INDENT2 are indentation specifications of the form
 
 (setq forth-indent-words
       '((("if" "begin" "do" "?do" "+do" "-do" "u+do"
-	  "u-do" "?dup-if" "?dup-0=-if" "case" "of" "try" 
+	  "u-do" "?dup-if" "?dup-0=-if" "case" "of" "try" "iferror"
 	  "[if]" "[ifdef]" "[ifundef]" "[begin]" "[for]" "[do]" "[?do]")
 	 (0 . 2) (0 . 2))
 	((":" ":noname" "code" "struct" "m:" ":m" "class" "interface")
@@ -431,11 +433,11 @@ INDENT1 and INDENT2 are indentation specifications of the form
 	 (-2 . 0) (0 . -2) non-immediate)
 	(("protected" "public" "how:") (-1 . 1) (0 . 0) non-immediate)
 	(("+loop" "-loop" "until") (-2 . 0) (-2 . 0))
-	(("else" "recover" "[else]") (-2 . 2) (0 . 0))
+	(("else" "recover" "restore" "endtry-iferror" "[else]")
+	 (-2 . 2) (0 . 0))
 	(("does>") (-1 . 1) (0 . 0))
 	(("while" "[while]") (-2 . 4) (0 . 2))
-	(("repeat" "[repeat]") (-4 . 0) (0 . -4))
-	(("\\g") (-2 . 2) (0 . 0))))
+	(("repeat" "[repeat]") (-4 . 0) (0 . -4))))
 
 (defvar forth-local-indent-words nil 
   "List of Forth words to prepend to `forth-indent-words', when a forth-mode
@@ -460,12 +462,11 @@ End:\" construct).")
 ;; in Lisp??
 (defun forth-filter (predicate list)
   (let ((filtered nil))
-    (mapcar (lambda (item)
+    (dolist (item list)
 	      (when (funcall predicate item)
 		(if filtered
 		    (nconc filtered (list item))
-		  (setq filtered (cons item nil))))
-	      nil) list)
+          (setq filtered (cons item nil)))))
     filtered))
 
 ;; Helper function for `forth-compile-word': return whether word has to be
@@ -486,7 +487,7 @@ End:\" construct).")
 	 (regexp 
 	  (concat "\\(" (cond ((stringp matcher) matcher)
 			      ((listp matcher) (regexp-opt matcher))
-			      (t (error "Invalid matcher `%s'")))
+			      (t (error "Invalid matcher")))
 		  "\\)"))
 	 (depth (regexp-opt-depth regexp))
 	 (description (cdr word)))
@@ -697,14 +698,14 @@ End:\" construct).")
 (eval-when-compile 
   (defmacro forth-save-buffer-state (varlist &rest body)
     "Bind variables according to VARLIST and eval BODY restoring buffer state."
-    (` (let* ((,@ (append varlist
+    `(let* (,@(append varlist
 		   '((modified (buffer-modified-p)) (buffer-undo-list t)
 		     (inhibit-read-only t) (inhibit-point-motion-hooks t)
 		     before-change-functions after-change-functions
-		     deactivate-mark buffer-file-name buffer-file-truename))))
-	 (,@ body)
+                        deactivate-mark buffer-file-name buffer-file-truename)))
+       ,@body
 	 (when (and (not modified) (buffer-modified-p))
-	   (set-buffer-modified-p nil))))))
+         (set-buffer-modified-p nil)))))
 
 ;; Function that is added to the `change-functions' hook. Calls 
 ;; `forth-update-properties' and keeps care of disabling undo information
@@ -827,8 +828,8 @@ Used for imenu index generation.")
 
 ;; Return the column increment, that the current line of forth code does to
 ;; the current or following lines. `which' specifies which indentation values
-;; to use. 0 means the indentation of following lines relative to current 
-;; line, 1 means the indentation of the current line relative to the previous 
+;; to use. 1 means the indentation of following lines relative to current 
+;; line, 0 means the indentation of the current line relative to the previous 
 ;; line. Return `nil', if there are no indentation words on the current line.
 (defun forth-get-column-incr (which)
   (save-excursion
@@ -1383,17 +1384,11 @@ programmers who tend to fill code won't use emacs anyway:-)."
       (progn
 	(delete-other-windows)
 	(split-window-vertically
-	 (/ (* (screen-height) forth-percent-height) 100))
+	 (/ (frame-height) 2))
 	(other-window 1)
 	(switch-to-buffer buffer)
 	(goto-char (point-max))
 	(other-window 1))))
-
-(defun forth-compile (command)
-  (interactive (list (setq forth-compile-command (read-string "Compile command: " forth-compile-command))))
-  (forth-split-1 "*compilation*")
-  (setq ctools-compile-command command)
-  (compile1 ctools-compile-command "No more errors"))
 
 ;;; Forth menu
 ;;; Mikael Karlsson <qramika@eras70.ericsson.se>
@@ -1614,8 +1609,7 @@ of `forth-program-name').  Runs the hooks `inferior-forth-mode-hook'
 	(forth-end-of-paragraph)
 	(skip-chars-backward  "\t\n ")
 	(setq end (point))
-	(if (re-search-backward "\n[ \t]*\n" nil t)
-	    (setq start (point))
+	(if (null (re-search-backward "\n[ \t]*\n" nil t))
 	  (goto-char (point-min)))
 	(skip-chars-forward  "\t\n ")
 	(forth-send-region (point) end))))
@@ -1653,11 +1647,11 @@ With argument, position cursor at end of buffer."
 	   (push-mark)
 	   (goto-char (point-max)))))
 
-  (defun forth-send-region-and-go (start end)
+  (defun forth-send-region-and-go (my-start end)
     "Send the current region to the inferior Forth process.
 Then switch to the process buffer."
     (interactive "r")
-    (forth-send-region start end)
+    (forth-send-region my-start end)
     (forth-switch-to-interactive t))
 
   (defcustom forth-source-modes '(forth-mode forth-block-mode)
@@ -1680,12 +1674,10 @@ next one.")
 				    forth-source-modes t)) ; T because LOAD
 					; needs an exact name
     (comint-check-source file-name) ; Check to see if buffer needs saved.
-    (setq forth-prev-l/c-dir/file (cons (file-name-directory    file-name)
+    (setq forth-prev-l/c-dir/file (cons (file-name-directory file-name)
 					(file-name-nondirectory file-name)))
-    (comint-send-string (forth-proc) (concat "(load \""
-					     file-name
-					     "\"\)\n")))
-
+    (comint-send-string (forth-proc)
+			(concat "s\" " file-name "\" included\n")))
 
   
   (defvar forth-process-buffer nil "*The current Forth process buffer.

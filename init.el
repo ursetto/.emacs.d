@@ -1240,6 +1240,7 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 
 ;;;; Gforth
 
+;; gforth.el is from gforth distribution; not available on ELPA.
 (autoload 'forth-mode "gforth" "Major mode for editing Forth code." t)
 (setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode)
      			    auto-mode-alist))
