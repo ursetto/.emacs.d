@@ -1240,25 +1240,20 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 
 ;;;; Gforth
 
-;; gforth.el is from gforth distribution; not available on ELPA.
-(autoload 'forth-mode "gforth" "Major mode for editing Forth code." t)
-(setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode)
-     			    auto-mode-alist))
-(autoload 'forth-block-mode "gforth" "Major mode for editing Forth blocks." t)
-(setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode)
-     			    auto-mode-alist))
-(add-hook 'forth-mode-hook 
-	  (function (lambda ()
-		      ;; customize variables here:
-		      (setq forth-indent-level 4)
-		      (setq forth-minor-indent-level 2)
-		      (setq forth-hilight-level 3)
-		      (setq indent-tabs-mode nil)
-		      (define-key forth-mode-map "\C-m" 'newline-and-indent)
-		      )))
-(add-hook 'inferior-forth-mode-hook
-	  (lambda ()
-	    (setq comint-process-echoes t)))
+;; forth-mode.el is gforth.el from the gforth distribution, not available as package.
+;; Renamed to forth-mode.el so it provides 'forth-mode properly.
+;; Recommendation: Try https://github.com/larsbrinkhoff/forth-mode from MELPA.
+(use-package forth-mode
+  :ensure nil  ; use local copy
+  :mode (("\\.fs\\'" . forth-mode)
+         ("\\.fb\\'" . forth-block-mode))
+  :config
+  (setq forth-indent-level 4)
+  (setq forth-minor-indent-level 2)
+  (setq forth-hilight-level 3)
+  :hook (inferior-forth-mode-hook 
+          . (lambda ()
+              (setq comint-process-echoes t))))
 
 ;;;; csv-mode
 
