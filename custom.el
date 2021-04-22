@@ -77,6 +77,7 @@
      (org-cycle-include-plain-lists . integrate)
      (outline-cycle-min-level . 4)
      (outline-cycle-min-level . 2))))
+ '(session-use-package t nil (session))
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote reverse) nil (uniquify)))
 (custom-set-faces

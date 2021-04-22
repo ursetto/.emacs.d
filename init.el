@@ -21,14 +21,16 @@
             (setq gc-cons-threshold gc-cons-threshold--orig
                   file-name-handler-alist file-name-handler-alist--orig)))
 
+;; Local, non-packaged software. Customizations may immediately require
+;; local features (session-use-package is an example) so do this first.
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
 ;; Load customization file at start. If we load at end of file, any implicit updates to
 ;; customized variables here are lost — it seems they are not written to disk immediately.
 ;; In particular, use-package may modify package-selected-packages (via package-install);
 ;; this update would be lost on load, causing package-autoremove to get out of sync.
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load-file custom-file)
-
-(add-to-list 'load-path "~/.emacs.d/lisp")
 
 (use-package filladapt :commands filladapt-mode)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
@@ -83,6 +85,7 @@
 ;; session can't be downloaded from MELPA because it has old, buggy version 2.3a.
 ;; I've submitted a PR for version 2.4b (https://github.com/emacsorphanage/session/pull/2)
 ;; but it may be wise to migrate to a maintained package. Meantime, use local copy in lisp/.
+;; Note: session-initialize writes a custom var which requires feature 'session.
 (use-package session
   :ensure nil   ; don't grab from melpa
   :init (add-hook 'after-init-hook 'session-initialize))
