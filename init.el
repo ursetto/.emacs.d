@@ -79,6 +79,7 @@
 (use-package undo-tree
   ;; C-x u to visualize; p/n/b/f to navigate; d to diff; t for timestamps; C-q to abort; M-_ to redo
   ;; Also see ~/.emacs.d/elpa/undo-tree-readme.txt
+  :diminish
   :init (global-undo-tree-mode))
 
 ;;;; session -- save command and variable history across sessions
@@ -1517,6 +1518,7 @@ If FILE already exists, signal an error."
 ;;;; rust-mode
 
 (use-package which-key    ;; Display popup key bindings. Globally useful.
+  :diminish
   :config
   (which-key-mode t))
 
