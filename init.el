@@ -79,10 +79,13 @@
   ;; Also see ~/.emacs.d/elpa/undo-tree-readme.txt
   :init (global-undo-tree-mode))
 
-;;;; session
-(require 'session)             ;; save command and variable history across sessions
-(add-to-list 'session-globals-exclude 'org-mark-ring)  ;; avoid infinite loop on exit
-(add-hook 'after-init-hook 'session-initialize)
+;;;; session -- save command and variable history across sessions
+;; session can't be downloaded from MELPA because it has old, buggy version 2.3a.
+;; I've submitted a PR for version 2.4b (https://github.com/emacsorphanage/session/pull/2)
+;; but it may be wise to migrate to a maintained package. Meantime, use local copy in lisp/.
+(use-package session
+  :ensure nil   ; don't grab from melpa
+  :init (add-hook 'after-init-hook 'session-initialize))
 
 (use-package edit-indirect
   ;; C-c C-c : commit     C-c C-k : abort     C-x C-s : update and continue

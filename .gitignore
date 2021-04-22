@@ -2,6 +2,7 @@
 *.orig
 .DS_Store
 *~
+\#*
 
 arch/
 build/
@@ -21,3 +22,4 @@ elpy/
 
 .lsp-session-v1
 tramp
+.session
