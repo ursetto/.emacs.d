@@ -882,21 +882,18 @@ ALL-BUFFERS is the list of buffer appearing in Buffer Selection Menu."
 
 ;;;; paredit
 
-(add-to-list 'load-path "~/.emacs.d/paredit")
-(autoload 'paredit-mode "paredit"
- "Minor mode for pseudo-structurally editing Lisp code." t)
-(add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
-;; paredit-*-list became paredit-*-parenthesis in paredit-20.
-(eval-after-load 'paredit
-  '(progn (define-key paredit-mode-map (kbd ")")   'paredit-close-parenthesis)  ;; Swap ) and M-)
-          (define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis-and-newline)
-	  ;; Terminal doesn't like C-) etc., so rebind frequently-used commands below.
-	  (define-key paredit-mode-map "\C-c)"     'paredit-forward-slurp-sexp)
-	  (define-key paredit-mode-map "\C-c}"     'paredit-forward-barf-sexp)
-	  (define-key paredit-mode-map "\C-c("     'paredit-backward-slurp-sexp)
-	  (define-key paredit-mode-map "\C-c{"     'paredit-backward-barf-sexp)
-	  (define-key paredit-mode-map "\M-R"      'paredit-splice-sexp-killing-backward)
-          ))
+(use-package paredit
+  :hook (scheme-mode . (lambda () (paredit-mode +1)))
+  :config
+  (define-key paredit-mode-map (kbd ")")   'paredit-close-parenthesis)  ;; Swap ) and M-)
+  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis-and-newline)
+  ;; Terminal doesn't like C-) etc., so rebind frequently-used commands below.
+  (define-key paredit-mode-map "\C-c)"     'paredit-forward-slurp-sexp)
+  (define-key paredit-mode-map "\C-c}"     'paredit-forward-barf-sexp)
+  (define-key paredit-mode-map "\C-c("     'paredit-backward-slurp-sexp)
+  (define-key paredit-mode-map "\C-c{"     'paredit-backward-barf-sexp)
+  (define-key paredit-mode-map "\M-R"      'paredit-splice-sexp-killing-backward)
+  )
 
 ;;;; SLIME
 
