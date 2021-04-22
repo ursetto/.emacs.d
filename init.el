@@ -199,7 +199,7 @@
 (global-set-key "\C-x2" 'split-window-quietly-zb)   ;; see below
 (global-set-key "\C-c\C-j" 'imenu)           ;; jump to definition in this file (python binding; also used for org-goto)
 
-(load (locate-user-emacs-file "my/my-window.el"))  ;; TODO: replace with require
+(require 'init-window)
 
 ;;;; Aliases
 (defalias 'qrr 'query-replace-regexp)

@@ -80,3 +80,5 @@
         (windmove-find-other-window 'up))
       (shrink-window arg)
     (enlarge-window arg)))
+
+(provide 'init-window)
