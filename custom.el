@@ -61,7 +61,7 @@
     ("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt")))
  '(package-selected-packages
    (quote
-    (filladapt which-key yaml-mode use-package tuareg magit merlin org elpy flycheck-rust gnu-elpa-keyring-update company-lsp lsp-mode indent-tools hydra ace-window avy esup cargo company-quickhelp company company-ghci auto-complete utop smex ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
+    (outline-magic filladapt which-key yaml-mode use-package tuareg magit merlin org elpy flycheck-rust gnu-elpa-keyring-update company-lsp lsp-mode indent-tools hydra ace-window avy esup cargo company-quickhelp company company-ghci auto-complete utop smex ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
  '(quack-default-program "\"~/scheme/xcode/Currency Converter/runapp\"")
  '(quack-fontify-style (quote plt))
  '(quack-pretty-lambda-p t)

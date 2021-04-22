@@ -574,14 +574,15 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;; Set up outline-magic.  Comment out entire hook if not installed.  Note that missing outline-magic
 ;; may circularly prevent installing outline-magic from ELPA, probably due to outline use from elisp mode.
+(use-package outline-magic :defer t)
 (add-hook 'outline-minor-mode-hook 
           (lambda () 
             (require 'outline-magic)
 	    ;;(define-key outline-minor-mode-map [(tab)] 'outline-cycle)
-	    (define-key outline-minor-mode-map [(M-tab)] 'outline-cycle)
+	    (define-key outline-minor-mode-map [(M-tab)] 'outline-cycle) ; <C-M-i> may work
 	    (define-key outline-minor-mode-map "\C-c\t" 'outline-cycle) ; meh
 	    (setq outline-cycle-emulate-tab nil)
-	    (define-key outline-minor-mode-map [(S-tab)]
+	    (define-key outline-minor-mode-map [(S-tab)] ; <backtab> may work
 	      '(lambda () (interactive) (outline-cycle '(4))))))  ;; magic '(4) is for OVERVIEW cycle
 
 ; Warning: in outline-minor-mode, tab emulation calls indent-relative,
