@@ -1436,28 +1436,34 @@ If FILE already exists, signal an error."
 
 ;;;; desktop
 
-(require 'desktop-menu)               ;; implicitly loads 'desktop
-(defalias 'dm 'desktop-menu)
-(setq desktop-menu-directory "~/.emacs.d/desktops")
-(setq desktop-load-locked-desktop t)  ;; Locking unusable unless we implement desktop-menu-kill. (see below)
-(setq desktop-menu-clear t)           ;; Clear unconditionally.  'ask' is annoying and using 'x' from menu to clear beforehand also kills the menu!
-;;(setq desktop-menu-autosave 120)    ;; autosave after # of seconds, or t to autosave at exit; default nil (no saving)
+;; desktop-menu is unsupported and can only be found as a download from emacswiki.org.
+;; Recommend looking for a supported package. See: https://www.emacswiki.org/emacs/SessionManagement
+(use-package desktop-menu         ;; implicitly loads 'desktop
+  :ensure nil   ; not a package
+  :init
+  (defalias 'dm 'desktop-menu)
+  :config
+  (setq desktop-menu-directory "~/.emacs.d/desktops")
+  (setq desktop-load-locked-desktop t)  ;; Locking unusable unless we implement desktop-menu-kill. (see below)
+  (setq desktop-menu-clear t)           ;; Clear unconditionally.  'ask' is annoying and using 'x' from menu to clear beforehand also kills the menu!
+  ;;(setq desktop-menu-autosave 120)    ;; autosave after # of seconds, or t to autosave at exit; default nil (no saving)
 
-;; desktop-menu issues:
-;;  Must press "q" to quit desktop-menu in order to save desktop list.  Otherwise
-;;    desktop name won't be saved.
-;;  Saves files like '.emacs.desktopN' instead of 'name.emacs.desktop', strangely.
-;;  Always locks .emacs.desktop.lock regardless of desktop you load, so every desktop
-;;    load will give you a lock warning.  [Fixed by me to lock specific desktop.]
-;;  Doesn't unlock desktop on exit.  desktop-kill will do this (in fact it is done
-;;    automatically in kill-emacs-hook) but knows nothing about our multiple desktops;
-;;    if desired, add desktop-menu-kill which would use desktop-menu--current-desktop to set
-;;    desktop-dirname and desktop-base-{file,lock}-name and call desktop-kill.
-;;  Will often leave several minibuffer windows open.
-;;  L (list buffers) appends to *desktop buffer list* instead of clearing first.
-;;    Workaround: use 'q' to exit desktop buffer list.
+  ;; NB: customization is in customize-group desktop-menu
 
-;; NB: customization is in customize-group desktop-menu
+  ;; desktop-menu issues:
+  ;;  Must press "q" to quit desktop-menu in order to save desktop list.  Otherwise
+  ;;    desktop name won't be saved.
+  ;;  Saves files like '.emacs.desktopN' instead of 'name.emacs.desktop', strangely.
+  ;;  Always locks .emacs.desktop.lock regardless of desktop you load, so every desktop
+  ;;    load will give you a lock warning.  [PATCHED by me to lock specific desktop.]
+  ;;  Doesn't unlock desktop on exit.  desktop-kill will do this (in fact it is done
+  ;;    automatically in kill-emacs-hook) but knows nothing about our multiple desktops;
+  ;;    if desired, add desktop-menu-kill which would use desktop-menu--current-desktop to set
+  ;;    desktop-dirname and desktop-base-{file,lock}-name and call desktop-kill.
+  ;;  Will often leave several minibuffer windows open.
+  ;;  L (list buffers) appends to *desktop buffer list* instead of clearing first.
+  ;;    Workaround: use 'q' to exit desktop buffer list.
+  )
 
 ;;;; ocaml
 
