@@ -98,10 +98,6 @@
 ;; http://www.gentei.org/~yuuji/software/windows.el
 ;; http://www.gentei.org/~yuuji/software/revive.el
 
-;;--This was in here before, but I don't appear to use it.
-;; (require 'filesets)
-;; (filesets-init)                ;; M-x filesets-open, M-x filesets-edit
-
 ;;; Initialization
 ;;;; Main
 
