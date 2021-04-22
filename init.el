@@ -1438,20 +1438,6 @@ If FILE already exists, signal an error."
   
 )
 
-;;;; scheme-complete
-
-;; Disabled--I never use scheme-complete..
-;; (autoload 'scheme-complete-or-indent "scheme-complete" nil t)
-;; (eval-after-load 'scheme
-;;  '(define-key scheme-mode-map [(tab)] 'scheme-complete-or-indent))
-
-;; Repository pathname required, and auto-detect (using 'csi') fails
-;; as our interpreter is called csi4.
-;; 2010-01: Caused a weird problem when repository bumped to chicken/5,
-;;          so removing.  We use "csi" for Chicken 4 now anyway.
-;; (setenv "CHICKEN_REPOSITORY" "/Users/jim/local/chicken-4/lib/chicken/4")
-
-
 ;;;; desktop
 
 (require 'desktop-menu)               ;; implicitly loads 'desktop
