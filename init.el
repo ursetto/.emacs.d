@@ -23,7 +23,9 @@
 
 ;; Local, non-packaged software. Customizations may immediately require
 ;; local features (session-use-package is an example) so do this first.
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path (locate-user-emacs-file "lisp"))
+;; My init code.
+(add-to-list 'load-path (locate-user-emacs-file "init"))
 
 ;; Load customization file at start. If we load at end of file, any implicit updates to
 ;; customized variables here are lost — it seems they are not written to disk immediately.
