@@ -326,17 +326,6 @@ You can remove all indentation from a region by giving a large negative ARG."
 (transient-mark-mode 1)
 (setq-default mark-even-if-inactive nil)  ; nil: Region commands don't operate on disappeared highlighting
 
-;;;; Info mode
-
-;; Looks like this works without help now.  /usr/local/info is
-;; included by default on Linux and OS X, and Aquamacs finds its own
-;; info files even in nonstd location.
-
-;; (eval-after-load 'info
-;;   '(progn
-;;      (add-to-list 'Info-default-directory-list "/usr/local/info")))
-
-
 ;;;; bs (buffer mode)
 ;; Keybinding bs-show is set in keybindings section.
 
