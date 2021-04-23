@@ -1,10 +1,6 @@
 ;;					 -*- outline-cycle-min-level: 2; -*-
 ;; $Id: .emacs,v 1.47 2014/11/26 17:37:31 jim Exp jim $
 
-;; M-x locate-library RET org RET : Get filesystem location of package "org"
-;; M-x list-load-path-shadows : List Emacs Lisp files that shadow other files
-;; `kill -USR2 emacs-pid`  if Emacs hangs; then use `M-x toggle-debug-on-quit` afterward.
-
 ;; Invoke early-init in versions that don't do so automatically.
 (when (version< emacs-version "27")
   (load (locate-user-emacs-file "early-init.el")))
@@ -674,14 +670,5 @@ You can remove all indentation from a region by giving a large negative ARG."
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
-;;; Random crap
-;; insert test1 .. test5 into buffer
-;; (mapcar (lambda (x) (insert "test" (format "%d" x) "\n")) '(1 2 3 4 5))
-;; (let ((line 1)) (while (<= line 5) (insert "test" (format "%d" line) "\n") (setq line (+ line 1))))
-
-;; repeat last command:             C-x z   (z to repeat further),   M-x repeat
-;; repeat minibuffer command:       C-x M-:  or C-x ESC ESC  or M-x repeat-complex-command (like M-x M-p, but keeps arguments, as a lisp expression)
-;; show minibuffer command history: M-x command-history
-;; show last 100 chars typed:       M-x view-lossage, C-h l
 
 (require 'init-aquamacs)
