@@ -386,27 +386,6 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Most of these are not Haskell-mode specific, and should be moved to the company-mode section.
 (with-eval-after-load 'company
   (push 'company-ghci company-backends)
-  (setq company-idle-delay 0.2) ;; Complete fast enough to avoid need for company-complete binding
-  ;; Use TAB to also cycle through completions instead of just completing common part.
-  ;; Disallow RET from completing selection, as I often hit RET at EOL.
-  ;; Move completion of selection to M-/ (M- already held if using M-n/M-p.)
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map [return] nil)
-  (define-key company-active-map (kbd "M-/") 'company-complete-selection)
-  ;; Alternate behaviors: 1) have TAB complete selection, do not allow complete common (like Atom).
-  ;;  2) have TAB complete common, then complete selection instead of cycling. Would need a custom
-  ;;     function for this.
-  ;; TODO: Consider raising company-idle-delay back to 0.5 and allowing completion begin on TAB, for
-  ;; less popup distraction. This may impact indentation.
-
-  (setq company-dabbrev-downcase nil) ;; Prevent lowercasing identifiers in comments.
-  (setq company-require-match nil) ;; Allow any non-match character to break out of completion.
-  ;; Use M-/ to complete a word in code that hasn't been loaded yet. Needed because
-  ;; dabbrev-code only lets you complete valid identifiers, and it's not valid until
-  ;; saved and loaded into the interactive session. May no longer be valid now that we have
-  ;; moved company-complete-selection to M-/.
 
   )  ; Assume ok to activate this globally. See [limit backend] below.
 (add-hook 'haskell-mode-hook
@@ -450,17 +429,33 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;;; company-mode
 
-;; Currently, company-mode is only used for Haskell.
-;; It seems <f1> (company-doc) doesn't work -- the doc buffer is empty.
-
-(autoload 'company-mode "company" nil t)
-
-;; (add-hook 'after-init-hook 'global-company-mode)   ; Uncomment to use company-mode in all buffers
-
-;; FAIL: company-quickhelp. Does not work on terminal, as pos-tip underlying library
+;; Warning: company-quickhelp does not work on tty, as pos-tip underlying library
 ;; (which ultimately uses built-in function x-show-tip) requires a GUI.
 ;; autocomplete's popup.el works fine on terminal.
 
+(use-package company
+  :bind
+  ;; Use TAB to also cycle through completions instead of just completing common part.
+  ;; Disallow RET from completing selection, as I often hit RET at EOL.
+  ;; Move completion of selection to M-/ (M- already held if using M-n/M-p.)
+  ;; The downside of M-/ is you can't easily use dabbrev or hippie-expand
+  ;; when company-mode is active, since the immediate idle popup absorbs M-/.
+  (:map company-active-map
+        ("<tab>" . 'company-complete-common-or-cycle)
+        ("C-m" . nil)
+        ("M-/" . company-complete-selection))
+  :config
+  (setq company-idle-delay 0.2) ;; Complete fast enough to avoid need for company-complete binding
+  (setq company-dabbrev-downcase nil) ;; Prevent lowercasing identifiers in comments.
+  (setq company-require-match nil) ;; Allow any non-match character to break out of completion.
+  ;(global-company-mode 1)   ; use company-mode in all buffers
+
+  ;; Alternate behaviors: 1) have TAB complete selection, do not allow complete common (like Atom).
+  ;;  2) have TAB complete common, then complete selection instead of cycling. Would need a custom
+  ;;     function for this.
+  ;; TODO: Consider raising company-idle-delay back to 0.5 and allowing completion begin on TAB, for
+  ;; less popup distraction. This may impact indentation.
+  )
 
 ;;;; python
 
