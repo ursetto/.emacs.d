@@ -3,7 +3,7 @@
 .DS_Store
 *~
 \#*
-
+.#*
 arch/
 build/
 desktops/
