@@ -78,7 +78,8 @@
   ;; C-x u to visualize; p/n/b/f to navigate; d to diff; t for timestamps; C-q to abort; M-_ to redo
   ;; Also see ~/.emacs.d/elpa/undo-tree-readme.txt
   :diminish
-  :init (global-undo-tree-mode))
+  :defer 1
+  :config (global-undo-tree-mode))
 
 ;;;; session -- save command and variable history across sessions
 ;; session can't be downloaded from MELPA because it has old, buggy version 2.3a.
