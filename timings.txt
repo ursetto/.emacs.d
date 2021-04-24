@@ -46,15 +46,10 @@ where init time goes to 100ms.
 - Use emacs 27 + package-quickstart to precompute a big fat autoloads file
   - Saves only 100ms (out of about 400ms taken by package.el). May need manual run of package-quickstart-refresh.
 - Setting package-archives to '() saves 200 ms and does not interfere with existing package activation.
-  But new packages (including those installed automatically at startup) cannot be installed.
-  We might be able to set this after initialization, and then set package--initialized to nil, which should allow 
-  package-list-packages and package-install to work; however it won't let init-time package install work.
+  You can then set package-archives normally afterward, and package listing, install and even init-time install
+  via use-package :ensure works. (Though you get a double-init warning during the session an :ensure occurs.)
 - package-load-all-descriptors (called from package-initialize) probably cannot be sped up.
-- Replace package.el with straight.el (requires surgery).
-
-
-
-
+- Replace package.el with straight.el (requires surgery)?
 
 
 
