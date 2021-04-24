@@ -63,12 +63,12 @@
 ;; in all file-visiting buffers. We should probably switch to those bindings,
 ;; though Ctrl->Meta is torturous to type and could be changed in magit-file-mode-map.
 (use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch-popup)))
-
-;;(global-set-key (kbd "C-x g") 'magit-status)   ;; was: C-c m
-;;(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)  ;; was: C-c C-m
-;; magit-status-mode-map: C-<tab> and M-<tab> are unreachable (section 4.2.2 Section Visibility). One of these should be set to C-c <tab>, at least. S-<tab> is reachable.
+  :bind (("C-x g" . magit-status)                 ;; was: C-c m
+         ("C-x M-g" . magit-dispatch-popup)       ;; was: C-c C-m
+         (:map magit-status-mode-map
+               ;("<backtab>" . magit-section-cycle-global)  ;; S-<tab> ok by default
+               ("C-M-i" . magit-section-cycle-diffs)   ;; M-<tab> rebind
+               ("C-c TAB" . magit-section-cycle))))    ;; C-<tab> unreachable on TTY
 
 (use-package indent-tools
   :bind (("C-c >" . indent-tools-hydra/body))
@@ -156,17 +156,13 @@
 
 
 ;;;; Keybindings
-(global-set-key [kp-enter] 'overwrite-mode)  ;; As good a key as any for now.
-(global-set-key [?\C-\)] 'blink-matching-open)  ;; See 55.4.6 for explanation of binding C-)
-                                                ;; Does not appear to work; matching parens are highlighted anyway
-(global-set-key [?\C-c?\;] 'comment-region)     ;; C-c ; comments, C-u C-c ; uncomments,
-                                                ;; numeric prefix adds that many ;s (or *s for C)
-(global-set-key "\M-`" 'other-frame)         ;; Was overridden in CVS by tmm.el at some point; may no longer need
-(global-set-key "\C-x\C-a" 'auto-fill-mode)  ;; Another option is refill-mode.
-(global-set-key "\C-xk" 'kill-this-buffer)   ;; Don't ask for which buffer to kill every time
-(global-set-key "\C-cz" 'zap-up-to-char)     ;; requires 'misc
-(global-set-key "\C-x2" 'split-window-quietly-zb)   ;; see below
-(global-set-key "\C-c\C-j" 'imenu)           ;; jump to definition in this file (python binding; also used for org-goto)
+(bind-key "C-c ;" 'comment-region)     ;; C-c ; comments, C-u C-c ; uncomments,
+                                       ;; numeric prefix adds that many ;s (or *s for C)
+(bind-key "C-x C-a" 'auto-fill-mode)   ;; Another option is refill-mode.
+(bind-key "C-x k" 'kill-this-buffer)   ;; Don't ask for which buffer to kill every time
+(bind-key "C-c z" 'zap-up-to-char)     ;; requires 'misc
+(bind-key "C-x 2" 'split-window-quietly-zb)   ;; see below
+(bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
 
 (require 'init-window)
 (require 'init-scheme)
@@ -225,7 +221,7 @@ work properly when arg given."
   "Copy the region-rectangle instead of `kill-rectangle'."
   (interactive "r")
   (setq killed-rectangle (extract-rectangle start end)))
-(global-set-key (kbd "C-x r M-w") 'my-copy-rectangle)
+(bind-key "C-x r M-w" 'my-copy-rectangle)
 
 (defun delete-file-and-buffer (&optional no-confirm-p)
   "Delete the file associated with the current buffer, and kill the buffer.
@@ -242,13 +238,12 @@ When no-confirm-p is t (or called with C-u), does not ask for confirmation."
             (message "Deleted %s" filename)
             (kill-buffer)))
       (message "No file associated with this buffer"))))
-(global-set-key (kbd "C-x C-d") 'delete-file-and-buffer)   ;; override list-directory
+(bind-key "C-x C-d" 'delete-file-and-buffer)   ;; override list-directory
 
 ;;; Modes
 ;;;; text-mode
 
 ;; Indent-rigidly doesn't insert space in blank lines.
-;; This is really annoying.
 (defun indent-rigidly-even-when-blank (start end arg)
   "Indent all lines starting in the region sideways by ARG columns,
 even when the line is blank.  Modified from indent-rigidly in indent.el.
@@ -272,8 +267,9 @@ You can remove all indentation from a region by giving a large negative ARG."
       (forward-line 1))
     (move-marker end nil)))
 
-;; Globally set this (even in other modes).
-(global-set-key "\C-x	" 'indent-rigidly-even-when-blank)
+;; Globally set this (even in other modes). Indented blank lines may
+;; not be a good idea anymore.
+(bind-key "C-x <tab>" 'indent-rigidly-even-when-blank)
 
 (require 'init-outline)
 (require 'init-org)
@@ -321,9 +317,9 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; smex
 
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-c M-x") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)   ; plain vanilla M-x
+(bind-key "M-x" 'smex)
+(bind-key "C-c M-x" 'smex-major-mode-commands)
+(bind-key "C-c C-c M-x" 'execute-extended-command)   ; plain vanilla M-x
 
 ;; While smex is active in the minibuffer:
 ;;  `C-h f` runs describe-function on the currently selected command.
