@@ -52,7 +52,7 @@
 		      ;; Default regexp includes min ;;; plus space plus first char, totalling 5 chars
  		      (setq outline-level 'lisp-outline-level)   ; the default
                       (when (fboundp 'outline-cycle)        ; only if outline-magic is loaded
-                        (outline-cycle nil) ;; OVERVIEW mode, but won't respect local min-level yet
+                        ;(outline-cycle nil) ;; OVERVIEW mode, but won't respect local min-level yet
                         (setq outline-cycle-min-level 1))
 					; (hide-other)
                       )))
