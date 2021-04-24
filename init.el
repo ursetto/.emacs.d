@@ -96,6 +96,7 @@
   :bind (("C-x n e" . edit-indirect-region)))
 
 (use-package which-key    ;; Display popup key bindings. Globally useful.
+  :defer 1
   :diminish
   :config
   (which-key-mode t))
@@ -548,6 +549,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Recommend looking for a supported package. See: https://www.emacswiki.org/emacs/SessionManagement
 (use-package desktop-menu         ;; implicitly loads 'desktop
   :ensure nil   ; not a package
+  :commands desktop-menu
   :init
   (defalias 'dm 'desktop-menu)
   :config
@@ -592,8 +594,8 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;;; tramp
 
 (use-package tramp
+  :defer 2
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-
 
 (require 'init-aquamacs)

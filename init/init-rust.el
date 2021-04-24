@@ -1,23 +1,13 @@
 ;;;; rust-mode
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "M-l")  ;; overrides downcase-word
-  :config
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  :hook (rust-mode . (lambda ()
-                       ;; Git VC backend lets lsp find our project root. Enable it in rust+lsp buffers,
-                       ;; as generic VC mode is usually disabled globally for performance.
-                       (if (null vc-handled-backends)
-                           (setq-local vc-handled-backends '(Git)))
-                       (lsp))))
-
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
   
-(use-package rust-mode)
+(use-package rust-mode
+  :defer t)
 
 (use-package flycheck
+  :defer t
   :config
   ;; Use C-c ! l to display error list.
   (add-to-list 'display-buffer-alist
@@ -33,6 +23,19 @@
   )
 
 (use-package flycheck-rust  ;; So flycheck understands the cargo workspace.
-  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :hook (flycheck-mode . flycheck-rust-setup))
+
+(use-package lsp-mode
+  :commands lsp lsp-deferred
+  :init
+  (setq lsp-keymap-prefix "M-l")  ;; overrides downcase-word
+  :config
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  :hook (rust-mode . (lambda ()
+                       ;; Git VC backend lets lsp find our project root. Enable it in rust+lsp buffers,
+                       ;; as generic VC mode is usually disabled globally for performance.
+                       (if (null vc-handled-backends)
+                           (setq-local vc-handled-backends '(Git)))
+                       (lsp))))
 
 (provide 'init-rust)

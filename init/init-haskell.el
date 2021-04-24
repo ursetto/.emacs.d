@@ -15,8 +15,6 @@
 ;;   completions are going on. Avoiding haskell-doc-mode seems to fix it. You still get type signatures
 ;;   in the echo area, even when company isn't running, and I don't know why.
 
-(use-package company-ghci)
-
 (use-package haskell-mode
   :bind
   (:map interactive-haskell-mode-map
@@ -27,6 +25,7 @@
   :hook
   ((haskell-mode . (lambda ()
                      (auto-complete-mode 0)         ; interferes with company-mode
+                     (use-package company-ghci)
                      (setq-local company-backends (cons 'company-ghci company-backends))
                      (company-mode)
                      (interactive-haskell-mode)     ; So company-mode can do completions
