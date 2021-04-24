@@ -339,17 +339,19 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;        C-t (toggle regexp match)
 ;;        TAB/? (full completion list, when no completions)
 
-;; FIXME: should be autoloaded, or loaded after startup, just so package-initialize can work
-;;        when called at the end of startup. (Although we call package-initialize earlier.)
-;; NOTE: This adds 50 ms to startup, and ido-ubiquitous-mode adds another 30 ms.
-(ido-mode t)                               ;; supersedes iswitchb-mode
-;; (setq ido-max-prospects 12)             ;; max # of matching items
-;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
-;;                                         ;; C-j or C-d is better option to get into dired.
-;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
-(setq ido-enable-tramp-completion t)
-;;(ido-ubiquitous-mode t)                    ;; Use ido everywhere (external library)
-;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
+(use-package ido
+  :ensure nil ; not a package
+  :defer 1
+  :config
+  (ido-mode t)                               ;; supersedes iswitchb-mode
+  (setq ido-enable-tramp-completion t)
+  ;; (setq ido-max-prospects 12)             ;; max # of matching items
+  ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
+  ;;                                         ;; C-j or C-d is better option to get into dired.
+  ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
+  ;;(ido-ubiquitous-mode t)                    ;; (use ido-completing-read+ now: https://benaiah.me/posts/using-ido-emacs-completion/)
+  ;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
+)
 
 ;;;; smex
 
