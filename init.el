@@ -102,11 +102,6 @@
   :config
   (which-key-mode t))
 
-;;;; Possible future requires
-;; hideshow-mode for lisp?
-;; http://www.gentei.org/~yuuji/software/windows.el
-;; http://www.gentei.org/~yuuji/software/revive.el
-
 ;;; Initialization
 ;;;; Main
 
@@ -129,9 +124,6 @@
 ;(setq default-frame-alist initial-frame-alist)  ;; Propagate font/window size to all frames.
 
 (set-language-environment "UTF-8")
-   ;; Note: for unknown reason, we cannot change the set-input-method (for example, to TeX)
-   ;; when MacOSX is in U.S. mode.  It works in U.S. Extended.  This only seems to be an
-   ;; issue in Carbon Emacs, not Aquamacs.
 (global-font-lock-mode 1)
 (icomplete-mode 1)              ;; Completion of non-ido things like C-h v, C-h f
 ;; (iswitchb-mode t)            ;; Switch between buffers using substrings (using ido-mode instead)
@@ -145,43 +137,18 @@
 (when (eq window-system 'mac)   ;; Only in OS X GUI mode.  Not a great solution.
   (server-start)                          ;; for emacsclient
   )
-(when (eq window-system 'ns)
-  ;; Bind Command-click to middle mouse button. This is for artist mode, and doesn't work (menu is
-  ;; bound on down-mouse-2 and can't get working).
-  ;; (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
-  )
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
 (show-paren-mode t)
 (setq show-paren-delay 0)
-;(defadvice show-paren-function    ;; from http://www.emacswiki.org/emacs/ShowParenMode
-;      (after show-matching-paren-offscreen activate)
-;      "If the matching paren is offscreen, show the matching line in the
-;        echo area. Has no effect if the character before point is not of
-;        the syntax class ')'."
-;      (interactive)
-;      (if (not (minibuffer-prompt))
-;          (let ((matching-text nil))
-;            ;; Only call `blink-matching-open' if the character before point
-;            ;; is a close parentheses type character. Otherwise, there's not
-;            ;; really any point, and `blink-matching-open' would just echo
-;            ;; "Mismatched parentheses", which gets really annoying.
-;            (if (char-equal (char-syntax (char-before (point))) ?\))
-;                (setq matching-text (blink-matching-open)))
-;            (if (not (null matching-text))
-;                (message matching-text)))))
-
-					; M-x glasses-mode (readable CamelText)
 (setq kill-whole-line 1)   ; C-k at beginning of line kills entire line
 ; (setq show-trailing-whitespace t)     ;; buffer-local; actually set via Customize
 (setq backup-directory-alist (cons (cons "." ".~")  ;; All backup files saved to .~/
                                    backup-directory-alist))
 (setq require-final-newline t) ;; Add final newline when not present (set to 'query to ask first)
 (setq-default indent-tabs-mode nil)    ;; screw it, tab characters are dumb.
-
-; (setq c-macro-preprocessor "/usr/bin/cpp -C")  ;; Does not work.  See ~/doc/OSX.txt.
 (setq enable-recursive-minibuffers t)
 ;;;; Show line/column like (30,2)
 (line-number-mode 1)
@@ -213,8 +180,6 @@
 (defalias 'ws 'whitespace-mode)
 (defalias 'wst 'whitespace-toggle-options)
 (defalias 'tail-mode 'auto-revert-tail-mode)
-
-;; M-r -- (move-to-window-line): M-r center, M-0 M-r top, M-- M-r bottom
 
 ;;;; Terminal
 
@@ -499,52 +464,6 @@ You can remove all indentation from a region by giving a large negative ARG."
   ))
 
 (require 'init-dired)
-
-;;;; woman / man-mode
-
-;; Advisory only:
-;; woman-mode sucks.  1) It is supposed to set buffer tab-width to woman-tab-width, but this
-;; does not happen, so the width is totally screwed up.  (A better way would be to
-;; expand tabs to spaces.)  2) Rereading manpath cache with `C-u M-x woman` does not work;
-;; you have to quit emacs.  3) Sometimes it opens in the wrong frame.  4) It does not read
-;; all manpages, for example OS X printf(3).
-
-;; man mode is really slow, but formatting is correct.
-;; newframe puts man page in new frame -- but new every time!  That's somewhat useless.
-;; default tabs are 8 and untabify is called before man-mode-hook -- so we cannot set
-;;   the tab-width.  Man-cooked-hook is called before, but Man-mode runs
-;; (kill-all-local-variables) and undoes our changes to tab-width.
-
-;; Speed can be increased a lot by not using -a switch.
-;; 
-
-;; (setq Man-switches "-a")  ;; Display all man page sections; use M-n / M-p to traverse
-
-(add-hook 'Man-mode-hook
-	  (lambda ()
-	    (outline-minor-mode t)
-;	    (set-frame-name "*Man*")  ; won't work
-	    ))
-(setq Man-frame-parameters
-      '((width . 78) (height . 40)))
-
-(setq Man-notify-method 'newframe)  ;; Overridden below in Aquamacs section.
-;; Discussion. Ideally we might have a dedicated frame for man pages, including a
-;; permanent buffer-selection buffer displaying just man page buffers.
-;; Right now, I cannot send all man buffers to the same frame; special-display-regexps
-;; will send differently-named buffers to different frames, even if the same regexp
-;; matches.  If only I could specify a frame _name_ to send it to.
-
-;; test
-(defun man-display-buffer-in-man-frame (buffer)
-  (select-frame-by-name "*Man*")
-  (switch-to-buffer buffer)  ; this and switch-to-buffer-here are affected weirdly
-                             ; seems to be a property of the special windows themselves
-                             ; for example switching to a new buffer always makes a new window
-                             ; may have to do with 'dedicated windows' (window-dedicated-p)
-
-  
-)
 
 ;;;; desktop
 
