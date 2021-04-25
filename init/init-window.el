@@ -5,6 +5,7 @@
 ;; although lazy-loaded major modes may need to have this re-set after load.
 
 (use-package windmove
+  :commands windmove-find-other-window
   :bind (("C-c l" . windmove-right)
          ("C-c h" . windmove-left)
          ("C-c j" . windmove-down)
@@ -28,7 +29,7 @@
   (add-to-list 'aw-dispatch-alist '(?o aw-flip-window)) ;; Pops aw ring! Ignores window motion outside aw.
   (add-to-list 'aw-dispatch-alist '(?t aw-split-window-fair "Split window fairly"))
   (add-to-list 'aw-dispatch-alist '(?= balance-windows))  ; C-x +
-)  
+)
 
 (defhydra hydra-windows (global-map "C-c w")
                                     ;; :timeout 5)
