@@ -4,6 +4,8 @@
   (load (locate-user-emacs-file "early-init.el")))
 
 (setq inhibit-startup-screen t)
+(setq initial-major-mode 'text-mode)
+(setq initial-scratch-message ";; Scratch buffer\n\n") ;; For elisp, use M-x ielm or M-x lisp-interaction-mode
 
 ;; Local, non-packaged software. Customizations may immediately require
 ;; local features (session-use-package is an example) so do this first.
