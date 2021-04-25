@@ -429,12 +429,12 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; artist
 
-(eval-after-load 'artist
-  '(progn
-     ;; Can't get rebind of s-mouse-1 to mouse-2 to work with artist mode, so manually
-     ;; rebind the context menu from mouse-2 to s-mouse-1.
-     (define-key artist-mode-map (kbd "<s-mouse-1>") 'artist-mouse-choose-operation)    ; Cmd-click for middle click
-     ))
+(use-package artist
+  :bind (:map artist-mode-map
+              ;; Can't get rebind of s-mouse-1 to mouse-2 to work with artist mode, so manually
+              ;; rebind the context menu from mouse-2 to s-mouse-1.
+              ;; Cmd-click for middle click.
+              ("<s-mouse-1>" . artist-mouse-choose-operation)))
 
 ;;;; bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks"))

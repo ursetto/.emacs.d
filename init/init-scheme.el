@@ -21,6 +21,7 @@
 ;;;; paredit
 
 (use-package paredit
+  :commands paredit-mode
   :hook (scheme-mode . (lambda () (paredit-mode +1)))
   :config
   (define-key paredit-mode-map (kbd ")")   'paredit-close-parenthesis)  ;; Swap ) and M-)
