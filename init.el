@@ -128,7 +128,7 @@
 (show-paren-mode t)
 (setq show-paren-delay 0)
 (setq kill-whole-line 1)   ; C-k at beginning of line kills entire line
-; (setq show-trailing-whitespace t)     ;; buffer-local; actually set via Customize
+(setq-default show-trailing-whitespace t)
 (setq backup-directory-alist (cons (cons "." ".~")  ;; All backup files saved to .~/
                                    backup-directory-alist))
 (setq require-final-newline t) ;; Add final newline when not present (set to 'query to ask first)
@@ -252,8 +252,8 @@ You can remove all indentation from a region by giving a large negative ARG."
     (move-marker end nil)))
 
 ;; Globally set this (even in other modes). Indented blank lines may
-;; not be a good idea anymore.
-(bind-key "C-x <tab>" 'indent-rigidly-even-when-blank)
+;; not be a good idea anymore, since it counts as trailing whitespace.
+; (bind-key "C-x <tab>" 'indent-rigidly-even-when-blank)
 
 (require 'init-outline)
 (require 'init-org)
