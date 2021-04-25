@@ -105,8 +105,6 @@
 (add-to-list 'completion-ignored-extensions "~/")
 (add-to-list 'completion-ignored-extensions ".retry")
 (add-to-list 'completion-ignored-extensions "__pycache__/")
-(require 'scroll-bar)
-(scroll-bar-mode nil)
 (winner-mode t)                         ;; use C-c left/right to undo/redo window config
 (when (eq window-system 'mac)   ;; Only in OS X GUI mode.  Not a great solution.
   (server-start)                          ;; for emacsclient

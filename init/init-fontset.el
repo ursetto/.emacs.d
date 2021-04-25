@@ -1,5 +1,8 @@
 ;;; Fontsets
 
+(require 'scroll-bar)
+(scroll-bar-mode nil)
+
 ;; Unused legacy stuff.
 ;; Set the font / window size here by setting initial-frame-alist.  Font name and
 ;; height should not be set in (custom-set-variables '(default (...))) or weird glitches will occur.
