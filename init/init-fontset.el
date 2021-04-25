@@ -1,6 +1,21 @@
 ;;; Fontsets
 
 ;; Unused legacy stuff.
+;; Set the font / window size here by setting initial-frame-alist.  Font name and
+;; height should not be set in (custom-set-variables '(default (...))) or weird glitches will occur.
+;(setq initial-frame-alist `((width . 118) (height . 71) (font . "fontset-fixedr12")))
+;(setq initial-frame-alist `((width . 118) (height . 66) (font . "fontset-monaco")))
+;(setq initial-frame-alist `((width . 118) (height . 77) (font . "fontset-fixedr11")))
+(setq-default line-spacing 1)   ;; Required for fixeer11; font height is slightly too small
+;; Height needs to be increased for line-spacing 1, even though there only 77 lines.  I guess
+;; height is calculated as if line-spacing were 0.  This has a deleterious effect on
+;; certain functions which position based on screen height, e.g. slowsplit.el; however
+;; this would also fail with differing line-heights anyway.
+
+;(setq initial-frame-alist `((width . 118) (height . 86) (font . "fontset-fixeer11o")))
+   ; (internal-border-width . 2) (border-color . "#4e3831")))
+   ; Can't get border to work on Aquamacs -- present but always black -- using fringe as a replacement instead.
+;(setq default-frame-alist initial-frame-alist)  ;; Propagate font/window size to all frames.
 
 (when (eq window-system 'w32)
   (set-face-font 'default "Lucida Sans Typewriter-8.0:antialias=none")
