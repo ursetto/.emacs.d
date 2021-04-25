@@ -139,7 +139,6 @@
 (bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
 
 (require 'init-window)
-(require 'init-scheme)
 ;;(require 'init-fontset)         ;; legacy, unused
 
 ;;;; Aliases
@@ -300,8 +299,6 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;  `M-.` jumps to the definition of the selected command.
 ;;  `C-h w` shows the key bindings for the selected command.
 
-(require 'init-haskell)
-
 ;;;;; company-mode
 
 ;; Warning: company-quickhelp does not work on tty, as pos-tip underlying library
@@ -355,40 +352,6 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;; should be written to be syntactically compatible with Python 3 anyway.
   (setq elpy-rpc-python-command "python3"))
 
-(require 'init-c)
-
-;;;; cperl-mode
-
-;; good values for cperl-array: sandybrown, tan, pink
-
-;; Note: autoinsert is schizophrenic. { only is electric after
-;; a () expression, so else { does not insert a newline.  You
-;; must have cperl-electric-keywords enabled for this, which
-;; will insert the whole construct.  sub { is never expanded.
-;; Doubling braces/parens is silly, because you can't "type over"
-;; the closing delimiter, but rather have to skip it with cursor
-;; motion or use cperl-linefeed (C-c C-j).  The closing } in
-;; an autoinserted construct must be skipped over manually.
-;; After }, newline is always inserted and following 'else' is not
-;; cleaned up, so you have to do this manually.  After ;, inserted
-;; newline will not be deleted if you immediately type }, so you
-;; have to delete it manually.
-;; Tried 5.22 (newest), but compilation error, and when fixed, it
-;; broke HEREDOC highlighting and had other weird font problems.
-;; And it didn't fix any of these issues.
-(add-hook 'cperl-mode-hook 
-  (lambda () 
-    (setq indent-tabs-mode nil)
-    (setq cperl-indent-level 4)
-    (setq cperl-highlight-variables-indiscriminately t)
-    (setq cperl-electric-lbrace-space nil)
-    (setq cperl-electric-parens nil)
-    (setq cperl-auto-newline nil)
-    (setq cperl-electric-keywords nil)
-    (define-key cperl-mode-map "\C-m" 'newline-and-indent)
-    (define-key cperl-mode-map "\C-j" 'cperl-linefeed)
-))
-
 ;;;; VC
 
 ;; Set to nil to disable all VC mode backends and just use dedicated packages like magit for
@@ -433,8 +396,6 @@ You can remove all indentation from a region by giving a large negative ARG."
 			   t   ; replace
   ))
 
-(require 'init-dired)
-
 ;;;; desktop
 
 ;; desktop-menu is unsupported and can only be found as a download from emacswiki.org.
@@ -467,8 +428,14 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;;    Workaround: use 'q' to exit desktop buffer list.
   )
 
+(require 'init-dired)
+
+(require 'init-scheme)
+(require 'init-c)
+(require 'init-perl)
 (require 'init-ocaml)
 (require 'init-rust)
+(require 'init-haskell)
 ;(require 'init-tex)
 
 ;;;; artist
