@@ -6,19 +6,20 @@ If you call it directly, it starts up essentially as fast as the homebrew non-wi
 "esup" package will profile your emacs startup but requires GUI emacs. (`open -a emacs` is fine.)
 
 
-$ time emacs -l ~/.emacs --batch --eval '(message "Hi")'
-        1.00 real                                                    # emacsforosx 25.3
-        0.74 real                                                    # emacsforosx 26.1
-        0.62 real         0.55 user         0.05 sys                 # homebrew 26.1 (non-Cocoa)
-        0.59 real         0.55 user         0.05 sys                 # homebrew 26.1, .emacs byte-compiled
+    $ time emacs -l ~/.emacs --batch --eval '(message "Hi")'
+            1.00 real                                                    # emacsforosx 25.3
+            0.74 real                                                    # emacsforosx 26.1
+            0.62 real         0.55 user         0.05 sys                 # homebrew 26.1 (non-Cocoa)
+            0.59 real         0.55 user         0.05 sys                 # homebrew 26.1, .emacs byte-compiled
 
-$ time emacs --batch --eval '(message "Hi")'   # i.e. no startup file
-        0.13 real                                                    # emacsforosx 25.3 / 26.1
-        0.02 real                                                    # homebrew 26.1
-        0.03 real                                                    # emacsforosx 26.1, if called directly
+    $ time emacs --batch --eval '(message "Hi")'   # i.e. no startup file
+            0.13 real                                                    # emacsforosx 25.3 / 26.1
+            0.02 real                                                    # homebrew 26.1
+            0.03 real                                                    # emacsforosx 26.1, if called directly
 
 
-
+    /usr/local/bin/emacs -nw --eval='(message "%s" (emacs-init-time))'
+            0.25s for this is reasonable.
 
 * Esup results
 
@@ -33,6 +34,7 @@ We need to concentrate on 3 things initially:
 3. GC. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/.
 
 
+## Package
 
 For package-initialize, most time is spent reading and executing autoload files (?). All autoloads for every single
 installed package are loaded. Not calling package-initialize will avoid this but the load paths won't be
@@ -40,24 +42,20 @@ updated.  use-package will not help here. Using (package-initialize 'noactivate)
 but doesn't set load path --- what the heck is it doing then?? Setting (package-load-path '()) seems to do the same thing,
 where init time goes to 100ms.
  - Actually, most time is spent loading descriptors and reading the archive file for each distribution -- MELPA's
-   archive is 1.6MB and growing!
+   archive is 1.6MB and growing! See below for workaround.
 
+`M-x use-package-report` to show startup times and whether packages have been Configured (loaded) or Initialized (not).
 
-- Use emacs 27 + package-quickstart to precompute a big fat autoloads file
-  - Saves only 100ms (out of about 400ms taken by package.el). May need manual run of package-quickstart-refresh.
-- Setting package-archives to '() saves 200 ms and does not interfere with existing package activation.
+### Fixes
+
+- [x] Deferring as much as possible (particularly lsp) is important.
+- [x] Use emacs 27 + package-quickstart to precompute a big fat autoloads file
+  - Saves only 100ms (out of about 400ms taken by package.el).
+- [x] Setting package-archives to '() saves 200 ms and does not interfere with existing package activation.
   You can then set package-archives normally afterward, and package listing, install and even init-time install
   via use-package :ensure works. (Though you get a double-init warning during the session an :ensure occurs.)
-- package-load-all-descriptors (called from package-initialize) probably cannot be sped up.
-- Replace package.el with straight.el (requires surgery)?
+- [x] package-load-all-descriptors (called from package-initialize) probably cannot be sped up.
+- [x] Bytecompiling split init files gives no gain and is a maintenance annoyance unless auto-compile is active,
+      so we don't.
+- [ ] Replace package.el with straight.el (requires surgery)?
 
-
-
-
-
-
-
-
-
-
-emacsclient -s   -- you can have multiple servers running
