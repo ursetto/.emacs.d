@@ -22,7 +22,16 @@
 
 (use-package paredit
   :commands paredit-mode
-  :hook (scheme-mode . (lambda () (paredit-mode +1)))
+  :hook
+  ((scheme-mode emacs-lisp-mode)
+   ;; Paredit signals an error on unbalanced parens, which is a bit antisocial because
+   ;; it stops hook execution cold, leaving the buffer partially initialized.
+   ;; Instead, tell the user what happened and continue.
+   . (lambda ()
+       (condition-case err
+           (paredit-mode +1)
+         (error (message "Paredit mode disabled: %s"
+                         (error-message-string err))))))
   :config
   (define-key paredit-mode-map (kbd ")")   'paredit-close-parenthesis)  ;; Swap ) and M-)
   (define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis-and-newline)
