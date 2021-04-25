@@ -1,6 +1,4 @@
-;;					 -*- outline-cycle-min-level: 2; -*-
-;; $Id: .emacs,v 1.47 2014/11/26 17:37:31 jim Exp jim $
-
+;;; init.el
 ;; Invoke early-init in versions that don't do so automatically.
 (when (version< emacs-version "27")
   (load (locate-user-emacs-file "early-init.el")))
@@ -59,6 +57,12 @@
                ;("<backtab>" . magit-section-cycle-global)  ;; S-<tab> ok by default
                ("C-M-i" . magit-section-cycle-diffs)   ;; M-<tab> rebind
                ("C-c TAB" . magit-section-cycle))))    ;; C-<tab> unreachable on TTY
+;; Disable all VC mode backends, and use dedicated packages like magit for
+;; version control. This speeds up tramp remote operations. This may have unexpected
+;; consequences -- for example, project.el uses the VC backend to find the project root by
+;; default. In particular, disabling Git can prevent lsp and elgot from guessing the project root,
+;; so you can can reenable it in a mode hook for those.
+(setq vc-handled-backends nil)
 
 (use-package indent-tools
   :bind (("C-c >" . indent-tools-hydra/body))
@@ -95,7 +99,6 @@
 ;;; Initialization
 ;;;; Main
 
-
 (menu-bar-mode 0)
 (set-language-environment "UTF-8")
 (global-font-lock-mode 1)
@@ -122,10 +125,11 @@
 (setq require-final-newline t) ;; Add final newline when not present (set to 'query to ask first)
 (setq-default indent-tabs-mode nil)    ;; screw it, tab characters are dumb.
 (setq enable-recursive-minibuffers t)
+(transient-mark-mode 1)
+(setq-default mark-even-if-inactive nil)  ; nil: Region commands don't operate on disappeared highlighting
 ;;;; Show line/column like (30,2)
 (line-number-mode 1)
 (column-number-mode 1)
-
 
 ;;;; Keybindings
 (bind-key "C-c ;" 'comment-region)     ;; C-c ; comments, C-u C-c ; uncomments,
@@ -133,7 +137,6 @@
 (bind-key "C-x C-a" 'auto-fill-mode)   ;; Another option is refill-mode.
 (bind-key "C-x k" 'kill-this-buffer)   ;; Don't ask for which buffer to kill every time
 (bind-key "C-c z" 'zap-up-to-char)     ;; requires 'misc
-(bind-key "C-x 2" 'split-window-quietly-zb)   ;; see below
 (bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
 
 (require 'init-window)
@@ -150,16 +153,16 @@
 
 ;;;; Terminal
 
-(unless window-system
+;(unless window-system
  ;(xterm-mouse-mode 1)
- (defun track-mouse (arg1))  ;; No idea, but complains it is void otherwise.
-)
+; (defun track-mouse (arg1))  ;; No idea, but complains it is void otherwise.
+;)
 
 ;;;; Use hippie-expand for M-/
 (eval-after-load "dabbrev" '(defalias 'dabbrev-expand 'hippie-expand))
 ;; At the moment I have simply moved -dabbrev and dabbrev-all-buffers ahead of
 ;; -list and -line.  See http://www.xemacs.org/Documentation/packages/html/edit-utils_23.html.
-(setq hippie-expand-try-functions-list 
+(setq hippie-expand-try-functions-list
  '(try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs
    try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-list try-expand-line
    try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol))
@@ -186,6 +189,7 @@ work properly when arg given."
       (other-window -1)
       (goto-char oldpt)
 )))
+(bind-key "C-x 2" 'split-window-quietly-zb)
 
 ;; "Copy rectangle" from http://www.emacswiki.org/emacs/RectangleCommands
 (defun my-copy-rectangle (start end)
@@ -211,9 +215,6 @@ When no-confirm-p is t (or called with C-u), does not ask for confirmation."
       (message "No file associated with this buffer"))))
 (bind-key "C-x C-d" 'delete-file-and-buffer)   ;; override list-directory
 
-;;; Modes
-;;;; text-mode
-
 ;; Indent-rigidly doesn't insert space in blank lines.
 (defun indent-rigidly-even-when-blank (start end arg)
   "Indent all lines starting in the region sideways by ARG columns,
@@ -237,10 +238,13 @@ You can remove all indentation from a region by giving a large negative ARG."
         (delete-region (point) (progn (skip-chars-forward " \t") (point))))
       (forward-line 1))
     (move-marker end nil)))
-
 ;; Globally set this (even in other modes). Indented blank lines may
-;; not be a good idea anymore, since it counts as trailing whitespace.
+;; not be a good idea anymore, since it counts as trailing whitespace,
+;; so it is disabled.
 ; (bind-key "C-x <tab>" 'indent-rigidly-even-when-blank)
+
+;;; Modes
+
 
 (require 'init-outline)
 (require 'init-org)
@@ -255,10 +259,6 @@ You can remove all indentation from a region by giving a large negative ARG."
 (let ((dot (make-glyph-code ?› 'invisible-text-ellipsis-face)))
   (set-display-table-slot standard-display-table 'selective-display
 			  (vector ?\  dot dot dot)))
-
-;;;; Mark mode
-(transient-mark-mode 1)
-(setq-default mark-even-if-inactive nil)  ; nil: Region commands don't operate on disappeared highlighting
 
 (require 'init-buffer)
 
@@ -350,15 +350,6 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;; should be written to be syntactically compatible with Python 3 anyway.
   (setq elpy-rpc-python-command "python3"))
 
-;;;; VC
-
-;; Set to nil to disable all VC mode backends and just use dedicated packages like magit for
-;; version control. This may speed up tramp remote operations. This may have unexpected
-;; consequences -- for example, project.el uses the VC backend to find the project root by
-;; default. In particular, disabling Git can prevent lsp and elgot from guessing the project root,
-;; so you can can reenable it in a mode hook for those.
-(setq vc-handled-backends nil)
-
 ;;;; Gforth
 
 ;; forth-mode.el is gforth.el from the gforth distribution, not available as package.
@@ -372,7 +363,7 @@ You can remove all indentation from a region by giving a large negative ARG."
   (setq forth-indent-level 4)
   (setq forth-minor-indent-level 2)
   (setq forth-hilight-level 3)
-  :hook (inferior-forth-mode-hook 
+  :hook (inferior-forth-mode-hook
           . (lambda ()
               (setq comint-process-echoes t))))
 
@@ -389,7 +380,7 @@ You can remove all indentation from a region by giving a large negative ARG."
   (interactive)
   (mark-whole-buffer)
   (shell-command-on-region (point-min) (point-max)
-			   "tidy -w 0 -xml -q -i" 
+			   "tidy -w 0 -xml -q -i"
 			   t   ; other output buffer (n/a)
 			   t   ; replace
   ))
@@ -448,6 +439,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;;; bookmarks
 (setq bookmark-default-file (locate-user-emacs-file "bookmarks"))
 (setq bookmark-save-flag 1)
+
 ;;;; tramp
 
 (use-package tramp
