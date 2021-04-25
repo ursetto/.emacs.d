@@ -18,7 +18,17 @@
 (use-package cc-mode
   :ensure nil
   :defer t
-  :init
+  :bind
+  (:map c-mode-base-map
+        ("C-m" . c-context-line-break)
+        ("C-M-a" . c-beginning-of-defun)
+        ("C-M-e" . c-end-of-defun))
+  :hook ((c-mode-common
+          . (lambda ()
+              (c-toggle-auto-hungry-state 1)  ;; turn auto-hungry (C-c C-t) on
+              ;;                              == auto-newline (C-c C-a) + hungry-delete (C-c C-d)
+              )))
+  :config
   (c-add-style
    "jim"                   ;; taken mostly from "linux" style with some KOS influence
    '((c-basic-offset . 4)
@@ -32,7 +42,7 @@
 			        (substatement-open after)
 			        (block-close . c-snug-do-while)
 			        (defun-open after) ; May slow down font lock if { is not in column 0.
-			        (class-open after) 
+			        (class-open after)
 			        (class-close)))
      (c-cleanup-list         . (brace-else-brace))
      (c-offsets-alist        . ((statement-block-intro . +)
@@ -46,20 +56,9 @@
 			        (arglist-cont-nonempty ;c-lineup-string-cont
 			         c-lineup-argcont   ; subsumes string-cont
 			         c-lineup-arglist)
-			        (arglist-cont ;c-lineup-string-cont 
+			        (arglist-cont ;c-lineup-string-cont
 			         c-lineup-argcont
 			         c-lineup-arglist)))))
-  :bind
-  (:map c-mode-base-map
-        ("C-m" . c-context-line-break)
-        ("C-M-a" . c-beginning-of-defun)
-        ("C-M-e" . c-end-of-defun))
-  :hook ((c-mode-common
-          . (lambda ()
-              (c-toggle-auto-hungry-state 1)  ;; turn auto-hungry (C-c C-t) on
-              ;;                              == auto-newline (C-c C-a) + hungry-delete (C-c C-d)
-              )))
-  :config
   (setq c-default-style "jim"))
 
 (provide 'init-c)
