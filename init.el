@@ -7,16 +7,6 @@
 
 (setq inhibit-startup-screen t)
 
-;; Changing gc size and nulling handler list saves about 150 ms in startup costs.
-(defvar gc-cons-threshold--orig gc-cons-threshold)
-(defvar file-name-handler-alist--orig file-name-handler-alist)
-(setq gc-cons-threshold 50000000
-      file-name-handler-alist nil)
-(add-hook 'emacs-startup-hook      ; reset these after we are done
-          (lambda ()
-            (setq gc-cons-threshold gc-cons-threshold--orig
-                  file-name-handler-alist file-name-handler-alist--orig)))
-
 ;; Local, non-packaged software. Customizations may immediately require
 ;; local features (session-use-package is an example) so do this first.
 (add-to-list 'load-path (locate-user-emacs-file "lisp"))

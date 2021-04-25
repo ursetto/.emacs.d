@@ -19,7 +19,7 @@ If you call it directly, it starts up essentially as fast as the homebrew non-wi
 
 
     /usr/local/bin/emacs -nw --eval='(message "%s" (emacs-init-time))'
-            0.25s for this is reasonable.
+            0.15s for this is achievable.
 
 * Esup results
 
@@ -48,6 +48,7 @@ where init time goes to 100ms.
 
 ### Fixes
 
+- [x] GC/file-handler-alist stuff must be moved to early-init to work, saves 100ms.
 - [x] Deferring as much as possible (particularly lsp) is important.
 - [x] Use emacs 27 + package-quickstart to precompute a big fat autoloads file
   - Saves only 100ms (out of about 400ms taken by package.el).
