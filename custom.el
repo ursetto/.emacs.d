@@ -151,7 +151,7 @@
  '(quack-pltish-paren-face ((((class color) (background dark)) (:foreground "#c00000"))))
  '(rust-question-mark-face ((t (:inherit font-lock-builtin-face :foreground "color-211" :weight bold))))
  '(secondary-selection ((t (:background "#303030"))))
- '(show-paren-match ((((class color) (background dark)) (:background "#ff5020"))))
+ '(show-paren-match ((t (:background "#af5f00"))))
  '(tuareg-font-lock-attribute-face ((t (:foreground "pink"))))
  '(tuareg-font-lock-constructor-face ((t (:foreground "color-208"))))
  '(tuareg-font-lock-extension-node-face ((t (:inherit tuareg-font-lock-infix-extension-node-face))))
