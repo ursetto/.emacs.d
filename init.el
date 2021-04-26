@@ -20,6 +20,8 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load-file custom-file)
 
+(require 'init-package)  ;; Initialize package manager.
+
 (use-package filladapt :commands filladapt-mode)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
 
