@@ -11,13 +11,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-overstrike-face ((((background dark)) (:foreground "#ff3"))))
- '(Man-underline-face (quote woman-italic-face))
+ '(Man-underline-face 'woman-italic-face)
  '(TeX-PDF-mode t)
  '(ahg-global-key-prefix "g")
  '(blink-cursor-mode t nil (frame))
  '(bs-attributes-list
-   (quote
-    (("" 1 1 left bs--get-marked-string)
+   '(("" 1 1 left bs--get-marked-string)
      ("M" 1 1 left bs--get-modified-string)
      ("R" 2 2 left bs--get-readonly-string)
      ("Buffer" bs--get-name-length 10 left bs--get-name)
@@ -27,58 +26,52 @@
      ("Mode" 10 10 right bs--get-mode-name)
      ("" 2 2 left "  ")
      ("File" 18 18 left bs--get-file-name-abbrev)
-     ("" 2 2 left "  "))))
+     ("" 2 2 left "  ")))
  '(bs-configurations
-   (quote
-    (("all" nil nil nil nil nil)
-     ("files" "^\\*scheme\\*$\\|^\\*info\\*" nil nil bs-visits-non-file bs-sort-buffer-interns-are-last))))
+   '(("all" nil nil nil nil nil)
+     ("files" "^\\*scheme\\*$\\|^\\*info\\*" nil nil bs-visits-non-file bs-sort-buffer-interns-are-last)))
  '(bs-default-sort-name "by filename")
  '(bs-max-window-height 50)
  '(bs-sort-functions
-   (quote
-    (("by name" bs--sort-by-name "Buffer" region)
+   '(("by name" bs--sort-by-name "Buffer" region)
      ("by mode" bs--sort-by-mode-stable "Mode" region)
-     ("by filename" bs--sort-by-filename-stable-empty-end "File" region))))
+     ("by filename" bs--sort-by-filename-stable-empty-end "File" region)))
  '(cperl-invalid-face nil)
  '(filesets-data
-   (quote
-    (("main"
-      (:files "/Users/jim/doc/to-read.txt" "/Users/jim/.emacs")))))
- '(fringe-indicators (quote empty) nil (fringe))
- '(fringe-mode (quote (1 . 8)) nil (fringe))
- '(glasses-face (quote bold))
+   '(("main"
+      (:files "/Users/jim/doc/to-read.txt" "/Users/jim/.emacs"))))
+ '(fringe-indicators 'empty nil (fringe))
+ '(fringe-mode '(1 . 8) nil (fringe))
+ '(glasses-face 'bold)
  '(glasses-separator "")
  '(gud-gdb-command-name "gdb --annotate=1")
  '(highlight-nonselected-windows t)
- '(indicate-buffer-boundaries (quote right))
+ '(indicate-buffer-boundaries 'right)
  '(jit-lock-context-time 0.2)
  '(large-file-warning-threshold nil)
  '(markdown-command "multimarkdown")
  '(mouse-wheel-progressive-speed nil)
- '(mouse-wheel-scroll-amount (quote (1 ((shift) . 5) ((control)))))
+ '(mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))))
  '(org-agenda-files
-   (quote
-    ("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt")))
+   '("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt"))
  '(package-selected-packages
-   (quote
-    (which-key yaml-mode use-package tuareg magit merlin org elpy flycheck-rust gnu-elpa-keyring-update company-lsp lsp-mode indent-tools hydra ace-window avy esup cargo company-quickhelp company company-ghci auto-complete utop smex ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg)))
+   '(paredit outline-magic filladapt which-key yaml-mode use-package tuareg magit merlin org elpy flycheck-rust gnu-elpa-keyring-update company-lsp lsp-mode indent-tools hydra ace-window avy esup cargo company-quickhelp company company-ghci auto-complete utop smex ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg))
  '(quack-default-program "\"~/scheme/xcode/Currency Converter/runapp\"")
- '(quack-fontify-style (quote plt))
+ '(quack-fontify-style 'plt)
  '(quack-pretty-lambda-p t)
  '(quack-programs
-   (quote
-    ("~/local/chicken/5.0.0/bin/csi" "~/local/chicken-4.12.0/bin/csi" "~/local/chicken/4.8.0.6/bin/csi" "~/local/chicken-4.x/bin/csi" "\"~/scheme/xcode/Currency Converter/runapp\"" "./csi" "/Users/jim/scheme/sdl/repl" "/Users/jim/tmp/sdl-gears" "/usr/bin/perl -d -e2" "/usr/bin/perl -d aacraid.pl" "/usr/bin/perl -d audit-all.pl" "/usr/bin/perl -d dmi.pl" "/usr/local/bin/csi" "/usr/local/bin/csi -:a20" "/usr/local/bin/csi -:a25" "/usr/local/bin/csi -i" "/usr/local/bin/ghci" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "~/dl/chicken-1.88/csi" "~/local/bin/csi" "~/local/bin/csi " "~/local/bin/csi -:d" "~/local/bin/csi -:d -:f32" "~/local/bin/csi -:d -:f4" "~/local/bin/csi -:d -:f8192" "~/local/bin/csi -:f16384" "~/local/bin/csi -:f2500" "~/local/bin/csi -:f3 -:d" "~/local/bin/csi -:f5600 -:d" "~/local/bin/csi -:f5700 -:d" "~/local/bin/csi -:f6000" "~/local/bin/csi -:f6000 -:d" "~/local/bin/csi -:f8192" "~/local/bin/csi -no-init" "~/local/bin/csi -syntax" "~/local/bin/csi4 -no-init -:a25" "~/local/bin/ghci" "~/local/chicken-4.6.6/bin/csi" "~/local/chicken-4.6/bin/csi" "~/local/chicken-4.7.0-st-clang/bin/csi" "~/local/chicken-4.7.0-st/bin/csi" "~/local/chicken-4.8/bin/csi" "~/local/chicken-4/bin/csi" "~/local/chicken-hygienic/bin/csi -:a20" "~/local/chicken/4.8.0.1/bin/csi" "~/local/chicken/4.x/bin/csi" "~/scheme/chicken-core/inst/bin/csi" "~/scheme/xcode" "~/scheme/xcode/Currency Converter/runapp" "~/scheme/xcode/CurrencyConverter/runapp" "~/scheme/xcode/Currency\\ Converter/runapp" "~/scheme/xcode/color-view/runapp")))
+   '("~/local/chicken/5.0.0/bin/csi" "~/local/chicken-4.12.0/bin/csi" "~/local/chicken/4.8.0.6/bin/csi" "~/local/chicken-4.x/bin/csi" "\"~/scheme/xcode/Currency Converter/runapp\"" "./csi" "/Users/jim/scheme/sdl/repl" "/Users/jim/tmp/sdl-gears" "/usr/bin/perl -d -e2" "/usr/bin/perl -d aacraid.pl" "/usr/bin/perl -d audit-all.pl" "/usr/bin/perl -d dmi.pl" "/usr/local/bin/csi" "/usr/local/bin/csi -:a20" "/usr/local/bin/csi -:a25" "/usr/local/bin/csi -i" "/usr/local/bin/ghci" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "~/dl/chicken-1.88/csi" "~/local/bin/csi" "~/local/bin/csi " "~/local/bin/csi -:d" "~/local/bin/csi -:d -:f32" "~/local/bin/csi -:d -:f4" "~/local/bin/csi -:d -:f8192" "~/local/bin/csi -:f16384" "~/local/bin/csi -:f2500" "~/local/bin/csi -:f3 -:d" "~/local/bin/csi -:f5600 -:d" "~/local/bin/csi -:f5700 -:d" "~/local/bin/csi -:f6000" "~/local/bin/csi -:f6000 -:d" "~/local/bin/csi -:f8192" "~/local/bin/csi -no-init" "~/local/bin/csi -syntax" "~/local/bin/csi4 -no-init -:a25" "~/local/bin/ghci" "~/local/chicken-4.6.6/bin/csi" "~/local/chicken-4.6/bin/csi" "~/local/chicken-4.7.0-st-clang/bin/csi" "~/local/chicken-4.7.0-st/bin/csi" "~/local/chicken-4.8/bin/csi" "~/local/chicken-4/bin/csi" "~/local/chicken-hygienic/bin/csi -:a20" "~/local/chicken/4.8.0.1/bin/csi" "~/local/chicken/4.x/bin/csi" "~/scheme/chicken-core/inst/bin/csi" "~/scheme/xcode" "~/scheme/xcode/Currency Converter/runapp" "~/scheme/xcode/CurrencyConverter/runapp" "~/scheme/xcode/Currency\\ Converter/runapp" "~/scheme/xcode/color-view/runapp"))
  '(quack-remap-find-file-bindings-p nil)
  '(quack-run-scheme-always-prompts-p t)
  '(safe-local-variable-values
-   (quote
-    ((org-agenda-show-all-dates)
+   '((org-agenda-show-all-dates)
      (org-agenda-todo-ignore-scheduled . all)
      (org-cycle-include-plain-lists . integrate)
      (outline-cycle-min-level . 4)
-     (outline-cycle-min-level . 2))))
+     (outline-cycle-min-level . 2)))
+ '(session-use-package t nil (session))
  '(tool-bar-mode nil)
- '(uniquify-buffer-name-style (quote reverse) nil (uniquify)))
+ '(uniquify-buffer-name-style 'reverse nil (uniquify)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -158,7 +151,7 @@
  '(quack-pltish-paren-face ((((class color) (background dark)) (:foreground "#c00000"))))
  '(rust-question-mark-face ((t (:inherit font-lock-builtin-face :foreground "color-211" :weight bold))))
  '(secondary-selection ((t (:background "#303030"))))
- '(show-paren-match ((((class color) (background dark)) (:background "#ff5020"))))
+ '(show-paren-match ((t (:background "#8700d7"))))
  '(tuareg-font-lock-attribute-face ((t (:foreground "pink"))))
  '(tuareg-font-lock-constructor-face ((t (:foreground "color-208"))))
  '(tuareg-font-lock-extension-node-face ((t (:inherit tuareg-font-lock-infix-extension-node-face))))
