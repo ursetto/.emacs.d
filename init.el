@@ -20,6 +20,8 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load-file custom-file)
 
+(require 'init-package)  ;; Initialize package manager.
+
 (use-package filladapt :commands filladapt-mode)
 (autoload 'zap-up-to-char "misc" "Load this for zap-up-to-char" t)
 
@@ -84,6 +86,7 @@
 ;; Note: session-initialize writes a custom var which requires feature 'session.
 (use-package session
   :ensure nil   ; don't grab from melpa
+  :straight nil
   :init (add-hook 'after-init-hook 'session-initialize))
 
 (use-package edit-indirect
@@ -290,9 +293,12 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; smex
 
-(bind-key "M-x" 'smex)
-(bind-key "C-c M-x" 'smex-major-mode-commands)
-(bind-key "C-c C-c M-x" 'execute-extended-command)   ; plain vanilla M-x
+(use-package smex
+  :bind
+  (("M-x" . smex)
+   ("C-c M-x" . smex-major-mode-commands)
+   ("C-c C-c M-x" . execute-extended-command)   ; plain vanilla M-x
+   ))
 
 ;; While smex is active in the minibuffer:
 ;;  `C-h f` runs describe-function on the currently selected command.
@@ -359,6 +365,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Recommendation: Try https://github.com/larsbrinkhoff/forth-mode from MELPA.
 (use-package forth-mode
   :ensure nil  ; use local copy
+  :straight nil
   :mode (("\\.fs\\'" . forth-mode)
          ("\\.fb\\'" . forth-block-mode))
   :config
@@ -371,10 +378,11 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; csv-mode
 
-(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
-;(autoload 'csv-mode "csv-mode"
-;  "Major mode for editing comma-separated value files." t)
-(setq csv-header-lines 1)    ;; Assume all csv files have a header, for auto region select
+(use-package csv-mode
+  :defer t
+  :config
+  ;; Assume all csv files have a header, for auto region select
+  (setq csv-header-lines 1))
 
 ;;;; html-mode
 
@@ -393,6 +401,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Recommend looking for a supported package. See: https://www.emacswiki.org/emacs/SessionManagement
 (use-package desktop-menu         ;; implicitly loads 'desktop
   :ensure nil   ; not a package
+  :straight nil ; straight's version is extremely old
   :commands desktop-menu
   :init
   (defalias 'dm 'desktop-menu)
@@ -446,6 +455,11 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 (use-package tramp
   :defer 2
+  :init
+  ;; Bugfix for Tramp 2.5.0.2, evidently this function is not autoloaded from tramp-crypt.
+  ;; Instead of loading it or pinning an earlier version, define as a noop since
+  ;; we don't use it.
+  (defun tramp-register-crypt-file-name-handler ())
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 

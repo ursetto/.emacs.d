@@ -24,3 +24,6 @@ package-quickstart.el
 .lsp-session-v1
 tramp
 .session
+
+straight
+!straight/versions/
