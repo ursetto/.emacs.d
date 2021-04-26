@@ -451,6 +451,11 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 (use-package tramp
   :defer 2
+  :init
+  ;; Bugfix for Tramp 2.5.0.2, evidently this function is not autoloaded from tramp-crypt.
+  ;; Instead of loading it or pinning an earlier version, define as a noop since
+  ;; we don't use it.
+  (defun tramp-register-crypt-file-name-handler ())
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
