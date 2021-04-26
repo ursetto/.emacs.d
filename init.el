@@ -86,6 +86,7 @@
 ;; Note: session-initialize writes a custom var which requires feature 'session.
 (use-package session
   :ensure nil   ; don't grab from melpa
+  :straight nil
   :init (add-hook 'after-init-hook 'session-initialize))
 
 (use-package edit-indirect
@@ -364,6 +365,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Recommendation: Try https://github.com/larsbrinkhoff/forth-mode from MELPA.
 (use-package forth-mode
   :ensure nil  ; use local copy
+  :straight nil
   :mode (("\\.fs\\'" . forth-mode)
          ("\\.fb\\'" . forth-block-mode))
   :config
@@ -376,10 +378,11 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; csv-mode
 
-(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
-;(autoload 'csv-mode "csv-mode"
-;  "Major mode for editing comma-separated value files." t)
-(setq csv-header-lines 1)    ;; Assume all csv files have a header, for auto region select
+(use-package csv-mode
+  :defer t
+  :config
+  ;; Assume all csv files have a header, for auto region select
+  (setq csv-header-lines 1))
 
 ;;;; html-mode
 
@@ -398,6 +401,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;; Recommend looking for a supported package. See: https://www.emacswiki.org/emacs/SessionManagement
 (use-package desktop-menu         ;; implicitly loads 'desktop
   :ensure nil   ; not a package
+  :straight nil ; straight's version is extremely old
   :commands desktop-menu
   :init
   (defalias 'dm 'desktop-menu)
