@@ -292,9 +292,12 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; smex
 
-(bind-key "M-x" 'smex)
-(bind-key "C-c M-x" 'smex-major-mode-commands)
-(bind-key "C-c C-c M-x" 'execute-extended-command)   ; plain vanilla M-x
+(use-package smex
+  :bind
+  (("M-x" . smex)
+   ("C-c M-x" . smex-major-mode-commands)
+   ("C-c C-c M-x" . execute-extended-command)   ; plain vanilla M-x
+   ))
 
 ;; While smex is active in the minibuffer:
 ;;  `C-h f` runs describe-function on the currently selected command.
