@@ -145,6 +145,7 @@
 (bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
 
 (require 'init-window)
+(require 'init-mc)
 ;;(require 'init-fontset)         ;; legacy, unused
 
 ;;;; Aliases
