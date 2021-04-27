@@ -82,12 +82,32 @@
 ;; Press any other key to type, or RET to exit.
 ;; This has a decent interface but is not compatible with multiple-cursors.
 ;; https://github.com/doitian/iy-go-to-char may work with multiple cursors but looks
-;; unsupported. You may want to try implementing your own jump-char which just does
-;; zap-{up-}to-char without the zap. (Prefix would be # of forward or backwards chars to search.)
+;; unsupported.
 (use-package jump-char
   :bind ("M-m" . jump-char-forward)
-  :bind ("M-M" . jump-char-backward)
+  :bind ("M-M" . jump-char-backward) ; M-S-m
   ;; Behave like isearch and make RET exit search.
   :bind (:map jump-char-base-map ("RET" . jump-char-exit)))
 
+;; Simple move-to-char relying on negative/numberic prefixes, like zap-to-char.
+;; Doesn't work with multiple cursors (it will prompt interactively for each line).
+(defun move-to-char (arg char)
+  "Move to ARGth occurrence of CHAR in the current line.
+Case is ignored if `case-fold-search' is non-nil in the current buffer.
+Goes backward if ARG is negative; error if CHAR not found."
+  (interactive "p\ncMove up to char: ")
+  (if (>= arg 0)
+      (progn
+        (forward-char arg)
+        (unwind-protect
+	    (search-forward (char-to-string char)
+                            (save-excursion (end-of-line) (point)) ; nil to search other lines
+                            nil arg)
+          (backward-char arg)))
+    (search-forward (char-to-string char)
+                    (save-excursion (beginning-of-line) (point)) ; nil to search other lines
+                    nil arg)))
+;; (bind-key "M-m" 'move-to-char)
+
 (provide 'init-mc)
+
