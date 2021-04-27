@@ -16,7 +16,7 @@
               ("q" . selected-off)    ; Disable selected bindings but leave region active. May not be useful.
               ("u" . upcase-region)   ; already on C-x C-u
               ("d" . downcase-region) ; already on C-x C-l
-              (";" . comment-or-uncomment-region)
+              (";" . comment-or-uncomment-region)  ; doesn't work if paredit loaded afterward
               ("w" . copy-region-as-kill)  ; Already on M-w. w might be better than c.
               (">" . indent-region)   ; on C-M-\
               ("k" . kill-region)     ; already on C-w. k might be better than w.
@@ -60,5 +60,34 @@
               ("\\" . mc/vertical-align-with-space)    ; place cursors on char to align
               ("#" . mc/insert-numbers) ; use num prefix to set the starting number
               ))
+
+;; https://github.com/zk-phi/phi-search works with multiple-cursors and lets you exit
+;; isearch at beginning of match, much better than end.
+;; But I can't recommend it because:
+;; - if match not found on a line, adds spurious cursors to beginning of region
+;; - phi-replace-query crashes
+;; (use-package phi-search
+;;   :bind (("C-s" . phi-search)           ;; note! all search/replace is regexp based
+;;          ("C-r" . phi-search-backward)
+;;          ("M-%" . phi-replace-query)
+;;          :map phi-search-default-map
+;;          ;; Make RET complete at beginning of match, instead of end of match like isearch.
+;;          ;; Original behavior available on M-RET.
+;;          ("RET" . phi-search-complete-at-beginning)
+;;          ("M-RET" . phi-search-complete) ; can't type C-RET on tty
+;;          ))
+
+;; https://github.com/lewang/jump-char
+;; Press char multiple times to keep jumping, or use , and ; to move.
+;; Press any other key to type, or RET to exit.
+;; This has a decent interface but is not compatible with multiple-cursors.
+;; https://github.com/doitian/iy-go-to-char may work with multiple cursors but looks
+;; unsupported. You may want to try implementing your own jump-char which just does
+;; zap-{up-}to-char without the zap. (Prefix would be # of forward or backwards chars to search.)
+(use-package jump-char
+  :bind ("M-m" . jump-char-forward)
+  :bind ("M-M" . jump-char-backward)
+  ;; Behave like isearch and make RET exit search.
+  :bind (:map jump-char-base-map ("RET" . jump-char-exit)))
 
 (provide 'init-mc)
