@@ -14,8 +14,13 @@
   (setq windmove-wrap-around t))
 
 (use-package ace-window
-  ;; M-o is bound to package facemenu (??)
-  :bind (("M-o" . ace-window))
+  ;; Switch between 2 windows with M-o, or between >2 windows with M-o <key>.
+  ;; If only 1 window, switch to most recent buffer. (Idea from crux-other-window-or-switch-buffer).
+  :bind (("M-o" . (lambda ()
+                    (interactive)
+                    (if (one-window-p)
+                        (switch-to-buffer nil)
+                      (ace-window 1)))))
   :config
   (setq aw-scope 'frame)        ;; Less confusing when multiple emacsclient ttys are active.
   ;; Many extra ace-window commands (split, rebalance) can be
