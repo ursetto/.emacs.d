@@ -16,5 +16,6 @@
         paredit-backslash
         paredit-close-square
         paredit-newline
+        paredit-open-square
         smex
         ))

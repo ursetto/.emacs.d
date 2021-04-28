@@ -8,6 +8,7 @@
 ;; region commands, you bind single keystrokes in this map. This is mainly useful for complex
 ;; or repeated commands like expand-region or multiple-cursors; an active region acts like a hydra.
 (use-package selected
+  :diminish selected-minor-mode
   :init (selected-global-mode)
   :bind (:map selected-keymap
               ;; Take care these keys do not collide with multiple-cursors.
@@ -37,16 +38,22 @@
          ; ("C-c m n" . mc/mark-next-like-this-word)   ; extraneous; see selected-keymap
          ; ("C-c m p" . mc/mark-previous-like-this-word)    ; extraneous; see selected-keymap
          ("C-c m m" . mc/mark-all-dwim)              ; can also start this with C-SPC m
+         ;("C-c m r" . set-rectangular-region-anchor) ; doesn't work well, use edit-lines
          )
   :bind (:map mc/keymap ("RET" . nil))  ; Don't abort mc mode; pass thru to selected-keymap.
+  ;; Fixing <return> -> RET in rectangular-region-mode-map is necessary with selected but the :bind
+  ;; here has no effect. Rectangular region marking isn't too useful anyway, except that it will
+  ;; skip short lines. Note this should also deactivate mark.
+  :bind (:map rectangular-region-mode-map ("RET" . rrm/switch-to-multiple-cursors)) ; normally on <return>
   :bind (:map selected-keymap
               ;; editing consecutive lines
               ("l" . mc/edit-lines)
               ("^" . mc/edit-beginnings-of-lines)
               ("$" . mc/edit-ends-of-lines)
               ;; searching for text
-              ("a" . mc/mark-all-like-this)
+              ("A" . mc/mark-all-like-this)            ; tends to lock up and crash emacs
               ("m" . mc/mark-all-dwim)                 ; can press repeatedly to mark outward
+              ;("r" . set-rectangular-region-anchor)   ; doesn't work well
               ("n" . mc/mark-next-like-this)
               ("p" . mc/unmark-next-like-this)
               ("P" . mc/mark-previous-like-this)
