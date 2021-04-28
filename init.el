@@ -101,6 +101,25 @@
   :config
   (which-key-mode t))
 
+(use-package crux
+  :bind (("C-a" . crux-move-beginning-of-line)
+         ("C-x 4 t" . crux-transpose-windows) ; only works intuitively with 2 windows
+         ("C-c R" . crux-rename-file-and-buffer)
+         ("C-c D" . crux-delete-file-and-buffer)
+         ;;("C-k" . crux-smart-kill-line) ; inside line kills to EOL, again kills whole line
+         ("C-k" . crux-kill-and-join-forward) ; inside line kill to EOL, again joins next line (like C-k C-^)
+         ("C-c DEL" . crux-kill-line-backwards) ; can't do C-DEL on tty
+         ("C-c K" . crux-kill-other-buffers)
+         ("M-k" . crux-kill-whole-line) ; Dedicated key is easier and more reliable than C-a C-a C-k.
+         ("C-^" . crux-top-join-line)   ; Like M-^, but join next line to this one. M-j (really Super-J) works too.
+         ("M-j" . crux-top-join-line)   ; (Testing.) This overrides default-indent-new-line (which I don't use).
+                                        ; C-k at EOL does a join already, except in paredit mode.
+         )
+  :config
+  (crux-with-region-or-buffer untabify)
+  (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
+  )
+
 ;;; Initialization
 ;;;; Main
 
@@ -123,7 +142,7 @@
 
 (show-paren-mode t)
 (setq show-paren-delay 0)
-(setq kill-whole-line 1)   ; C-k at beginning of line kills entire line
+;(setq kill-whole-line 1)   ; C-k at beginning of line kills entire line. Works with crux. Prefer M-k.
 (setq-default show-trailing-whitespace t)
 (setq backup-directory-alist (cons (cons "." ".~")  ;; All backup files saved to .~/
                                    backup-directory-alist))
