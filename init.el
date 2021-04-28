@@ -115,10 +115,12 @@
          ("M-j" . crux-top-join-line)   ; (Testing.) This overrides default-indent-new-line (which I don't use).
                                         ; C-k at EOL does a join already, except in paredit mode.
          )
+  :init
+  (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
+  :defer 2   ; Due to the advice in :config, this can't be deferred indefinitely.
   :config
   (crux-with-region-or-buffer untabify)
-  (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
-  )
+  (crux-with-region-or-line comment-or-uncomment-region))
 
 ;;; Initialization
 ;;;; Main
@@ -156,8 +158,7 @@
 (column-number-mode 1)
 
 ;;;; Keybindings
-(bind-key "C-c ;" 'comment-region)     ;; C-c ; comments, C-u C-c ; uncomments,
-                                       ;; numeric prefix adds that many ;s (or *s for C)
+(bind-key "C-c ;" 'comment-or-uncomment-region)  ;; note M-; is comment-dwim
 (bind-key "C-x C-a" 'auto-fill-mode)   ;; Another option is refill-mode.
 (bind-key "C-x k" 'kill-this-buffer)   ;; Don't ask for which buffer to kill every time
 (bind-key "C-c z" 'zap-up-to-char)     ;; requires 'misc
