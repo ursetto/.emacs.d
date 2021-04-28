@@ -33,6 +33,8 @@
 ;; Press RET or C-g to deselect the region and go back to typing; press C-g again to exit mc mode.
 ;; It's not possible to place or remove arbitrary cursors; creative text search, cursor
 ;; motion and unmark/skip may be needed.
+;;
+;; See also: https://github.com/victorhge/iedit
 (use-package multiple-cursors
   :bind (; ("C-c m l" . mc/edit-lines)                 ; extraneous; see selected-keymap
          ; ("C-c m n" . mc/mark-next-like-this-word)   ; extraneous; see selected-keymap

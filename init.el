@@ -133,6 +133,7 @@
 (menu-bar-mode 0)
 (set-language-environment "UTF-8")
 (global-font-lock-mode 1)
+(setq echo-keystrokes 0.1)
 (icomplete-mode 1)              ;; Completion of non-ido things like C-h v, C-h f
 ;; (iswitchb-mode t)            ;; Switch between buffers using substrings (using ido-mode instead)
 ;; Ignore these extensions during filename completion (works with ido and others).
