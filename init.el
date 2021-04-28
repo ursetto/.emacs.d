@@ -143,6 +143,7 @@
 (bind-key "C-x k" 'kill-this-buffer)   ;; Don't ask for which buffer to kill every time
 (bind-key "C-c z" 'zap-up-to-char)     ;; requires 'misc
 (bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
+(bind-key "C-c b" (lambda () (interactive) (switch-to-buffer nil)))  ;; switch to previous buffer
 
 (require 'init-window)
 (require 'init-mc)

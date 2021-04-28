@@ -1,6 +1,5 @@
 ;;;; Org-mode
 (define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cb" 'org-iswitchb)
 ;(define-key global-map "\C-cr" 'org-remember)   ;; NOTE: Superseded by org-capture.
 (define-key global-map "\C-cc" 'org-capture)
 (define-key global-map "\C-cL" 'org-store-link) ;; Use L instead of l to avoid conflict with windmove
