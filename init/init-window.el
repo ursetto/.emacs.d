@@ -16,6 +16,7 @@
 (use-package ace-window
   ;; Switch between 2 windows with M-o, or between >2 windows with M-o <key>.
   ;; If only 1 window, switch to most recent buffer. (Idea from crux-other-window-or-switch-buffer).
+  :defer t
   :bind (("M-o" . (lambda ()
                     (interactive)
                     (if (one-window-p)

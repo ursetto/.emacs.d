@@ -117,10 +117,14 @@
          )
   :init
   (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
-  :defer 2   ; Due to the advice in :config, this can't be deferred indefinitely.
+  :defer 1   ; Due to the advice in :config, this can't be deferred indefinitely.
   :config
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-line comment-or-uncomment-region))
+
+(use-package discover-my-major
+  :bind (("C-h C-m" . discover-my-major)
+         ("C-h M-m" . discover-my-mode)))
 
 ;;; Initialization
 ;;;; Main
