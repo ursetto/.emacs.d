@@ -4,6 +4,7 @@
   (load (locate-user-emacs-file "early-init.el")))
 
 (setq inhibit-startup-screen t)
+(defun display-startup-echo-area-message () (message nil)) ;; clear minibuffer on startup
 (setq initial-major-mode 'text-mode)
 (setq initial-scratch-message ";; Scratch buffer\n\n") ;; For elisp, use M-x ielm or M-x lisp-interaction-mode
 
@@ -88,9 +89,9 @@
   :ensure nil   ; don't grab from melpa
   :straight nil
   :init
-  ;; Use session only for saving history and rings. save-place-mode and recentf will
-  ;; do the job of 'places, and 'keys and 'menus are not needed. Note 'de-saveplace
-  ;; (the default) will disable save-place-mode.
+  ;; Init 'session only for saving history and rings. save-place-mode and recentf will
+  ;; do the job of 'places, and 'keys and 'menus are not needed. smex saves M-x history.
+  ;; Note 'de-saveplace (the default) will disable save-place-mode.
   (setq session-initialize '(session))     ; does not work in :custom
   :hook (after-init . session-initialize))
 
