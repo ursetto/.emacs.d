@@ -98,6 +98,9 @@
 (use-package which-key    ;; Display popup key bindings. Globally useful.
   :defer 1
   :diminish
+  :custom
+  (which-key-idle-delay 0.3)
+  (which-key-idle-secondary-delay 0)
   :config
   (which-key-mode t))
 
@@ -457,6 +460,11 @@ You can remove all indentation from a region by giving a large negative ARG."
   )
 
 (use-package yaml-mode :defer t)
+(use-package projectile
+  ;; :bind (:map projectile-mode-map
+  ;;             ("C-c p" . projectile-command-map))
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :config (projectile-mode +1))
 
 (require 'init-dired)
 
