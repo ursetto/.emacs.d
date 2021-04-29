@@ -95,12 +95,12 @@
   ;; ability to autoselect region for editing when inside existing one.
   :bind (("C-x n e" . edit-indirect-region)))
 
-(use-package which-key    ;; Display popup key bindings. Globally useful.
+(use-package which-key    ;; Display popup key bindings.
   :defer 1
   :diminish
   :custom
-  (which-key-idle-delay 0.5)
-  (which-key-idle-secondary-delay 0)
+  (which-key-idle-delay 0.5) ; Long enough to avoid flashing, short enough to avoid waiting.
+  (which-key-idle-secondary-delay 0) ; Once the display is up, show other maps immediately.
   :config
   (which-key-mode t))
 
@@ -137,8 +137,7 @@
 (set-language-environment "UTF-8")
 (global-font-lock-mode 1)
 (setq echo-keystrokes 0.1)
-(icomplete-mode 1)              ;; Completion of non-ido things like C-h v, C-h f
-;; (iswitchb-mode t)            ;; Switch between buffers using substrings (using ido-mode instead)
+;; (icomplete-mode 1)              ;; Use ido-ubiquitous instead. icomplete doesn't play well with C-x C-f C-f.
 ;; Ignore these extensions during filename completion (works with ido and others).
 (add-to-list 'completion-ignored-extensions "~/")
 (add-to-list 'completion-ignored-extensions ".retry")
@@ -308,23 +307,32 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;        C-t (toggle regexp match)
 ;;        TAB/? (full completion list, when no completions)
 
+;; Note ido and its various helper modes are fairly heavyweight to load.
 (use-package ido
   :ensure nil ; not a package
   :defer 1
   :config
-  (use-package flx-ido)
   (ido-mode 1)                               ;; supersedes iswitchb-mode
   (ido-everywhere 1)
+  (use-package ido-completing-read+)
+  (ido-ubiquitous-mode 1)
+  (use-package flx-ido)
   (flx-ido-mode 1)
+  (use-package ido-vertical-mode
+    :config
+    ;; Avoid displaying bright red bars during ido vertical search.
+    (add-hook 'minibuffer-setup-hook (lambda () (setq show-trailing-whitespace nil)))
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only))
   (setq ido-enable-flex-matching t)
   (setq ido-use-faces nil)
   (setq ido-enable-tramp-completion t)
+  ;; (setq ido-use-virtual-buffers t) ; requires recentf
   ;; (setq ido-max-prospects 12)             ;; max # of matching items
   ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
   ;;                                         ;; C-j or C-d is better option to get into dired.
   ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
-  ;;(ido-ubiquitous-mode t)                    ;; (use ido-completing-read+ now: https://benaiah.me/posts/using-ido-emacs-completion/)
-  ;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
+    ;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
 )
 
 ;;;; smex
