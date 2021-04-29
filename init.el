@@ -99,7 +99,7 @@
   :defer 1
   :diminish
   :custom
-  (which-key-idle-delay 0.3)
+  (which-key-idle-delay 0.5)
   (which-key-idle-secondary-delay 0)
   :config
   (which-key-mode t))
@@ -312,7 +312,12 @@ You can remove all indentation from a region by giving a large negative ARG."
   :ensure nil ; not a package
   :defer 1
   :config
-  (ido-mode t)                               ;; supersedes iswitchb-mode
+  (use-package flx-ido)
+  (ido-mode 1)                               ;; supersedes iswitchb-mode
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil)
   (setq ido-enable-tramp-completion t)
   ;; (setq ido-max-prospects 12)             ;; max # of matching items
   ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
@@ -324,7 +329,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 
 ;;;; smex
 
-(use-package smex
+(use-package smex  ;; works with ido
   :bind
   (("M-x" . smex)
    ("C-c M-x" . smex-major-mode-commands)
