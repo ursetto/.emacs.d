@@ -117,6 +117,9 @@
          ("C-^" . crux-top-join-line)   ; Like M-^, but join next line to this one. M-j (really Super-J) works too.
          ("M-j" . crux-top-join-line)   ; (Testing.) This overrides default-indent-new-line (which I don't use).
                                         ; C-k at EOL does a join already, except in paredit mode.
+         ;; Will use ido completion if available. C-x C-r also reasonable.
+         ;; Projectile recentf is on `C-c p e`, so prefer `C-c e` to `C-c f`.
+         ("C-c e" . crux-recentf-find-file)
          )
   :init
   (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
@@ -485,6 +488,23 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;;             ("C-c p" . projectile-command-map))
   :bind-keymap ("C-c p" . projectile-command-map)
   :config (projectile-mode +1))
+(use-package recentf
+  :straight nil :ensure nil
+  :defer 1
+  :custom
+  (recentf-max-menu-items 200)
+  (recentf-max-saved-items 200)
+  (recentf-exclude '((expand-file-name package-user-dir)
+                     ".cache"
+                     "bookmarks"
+                     "cache"
+                     "ido.*"
+                     "recentf"
+                     "undo-tree-hist"
+                     "COMMIT_EDITMSG\\'"))
+  :config
+  ;; (setq recentf-keep '(file-remote-p file-readable-p))  ; Uncomment only if tramp hangs.
+  (recentf-mode))
 
 (require 'init-dired)
 
