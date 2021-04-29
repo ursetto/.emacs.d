@@ -473,6 +473,13 @@ You can remove all indentation from a region by giving a large negative ARG."
   )
 
 (use-package yaml-mode :defer t)
+(use-package ag    ; Projectile has built-in ag support on C-c p s s.
+  :defer t
+  :custom
+  ;;(ag-reuse-buffers t
+  (ag-highlight-search t))
+;; TODO: I'd like a way to switch to a buffer in an open project, without having to select
+;; a file.
 (use-package projectile
   ;; :bind (:map projectile-mode-map
   ;;             ("C-c p" . projectile-command-map))
