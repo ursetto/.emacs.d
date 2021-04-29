@@ -456,6 +456,8 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;;    Workaround: use 'q' to exit desktop buffer list.
   )
 
+(use-package yaml-mode :defer t)
+
 (require 'init-dired)
 
 (require 'init-scheme)
