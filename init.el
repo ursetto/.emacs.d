@@ -87,7 +87,44 @@
 (use-package session
   :ensure nil   ; don't grab from melpa
   :straight nil
-  :init (add-hook 'after-init-hook 'session-initialize))
+  :init
+  ;; Use session only for saving history and rings. save-place-mode and recentf will
+  ;; do the job of 'places, and 'keys and 'menus are not needed. Note 'de-saveplace
+  ;; (the default) will disable save-place-mode.
+  (setq session-initialize '(session))     ; does not work in :custom
+  :hook (after-init . session-initialize))
+
+(use-package recentf
+  :straight nil :ensure nil
+  :defer 1
+  :custom
+  (recentf-max-menu-items 200)
+  (recentf-max-saved-items 200)
+  (recentf-exclude '((expand-file-name package-user-dir)
+                     ".cache"
+                     "bookmarks"
+                     "cache"
+                     "ido.*"
+                     "recentf"
+                     "undo-tree-hist"
+                     "COMMIT_EDITMSG\\'"))
+  :config
+  ;; (setq recentf-keep '(file-remote-p file-readable-p))  ; Uncomment only if tramp hangs.
+
+  ;; Keep noisy recentf cleanup and read/write messages out of the minibuffer.
+  (defadvice recentf-cleanup (around silence activate)
+    (let ((inhibit-message t))  ; emacs >= 25.1
+      ad-do-it))
+  (defadvice recentf-load-list (around silence activate)
+    (let ((inhibit-message t))
+      ad-do-it))
+  (defadvice recentf-save-list (around silence activate)
+    (let ((inhibit-message t))
+      ad-do-it))
+  (recentf-mode))
+
+(save-place-mode 1)
+;; ;; (setq save-place-forget-unreadable-files nil)
 
 (use-package edit-indirect
   ;; C-c C-c : commit     C-c C-k : abort     C-x C-s : update and continue
@@ -488,23 +525,6 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;;             ("C-c p" . projectile-command-map))
   :bind-keymap ("C-c p" . projectile-command-map)
   :config (projectile-mode +1))
-(use-package recentf
-  :straight nil :ensure nil
-  :defer 1
-  :custom
-  (recentf-max-menu-items 200)
-  (recentf-max-saved-items 200)
-  (recentf-exclude '((expand-file-name package-user-dir)
-                     ".cache"
-                     "bookmarks"
-                     "cache"
-                     "ido.*"
-                     "recentf"
-                     "undo-tree-hist"
-                     "COMMIT_EDITMSG\\'"))
-  :config
-  ;; (setq recentf-keep '(file-remote-p file-readable-p))  ; Uncomment only if tramp hangs.
-  (recentf-mode))
 
 (require 'init-dired)
 
