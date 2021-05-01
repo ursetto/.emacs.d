@@ -7,6 +7,7 @@
 (defun display-startup-echo-area-message () (message nil)) ;; clear minibuffer on startup
 (setq initial-major-mode 'text-mode)
 (setq initial-scratch-message ";; Scratch buffer\n\n") ;; For elisp, use M-x ielm or M-x lisp-interaction-mode
+(fset 'yes-or-no-p 'y-or-n-p)  ;; Prompt y/n instead of yes/no.
 
 ;; Local, non-packaged software. Customizations may immediately require
 ;; local features (session-use-package is an example) so do this first.
@@ -525,7 +526,16 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;; :bind (:map projectile-mode-map
   ;;             ("C-c p" . projectile-command-map))
   :bind-keymap ("C-c p" . projectile-command-map)
-  :config (projectile-mode +1))
+  :config
+  (projectile-mode +1)
+  ;; Ideally, I would like switching to an open project to bring up the project buffer or
+  ;; ibuffer list. This needs a bit of code as switch-project-action is called for all
+  ;; switching.  Unfortunately, there is a small bug where projectile-switch-to-buffer in
+  ;; this action (or projectile-commander's "b" option) will include the current buffer as
+  ;; the first result. For now, just call dired on the project root until I gain more
+  ;; experience.
+  ;; Note: projectile-commander can be reached with C-u prefix.
+  (setq projectile-switch-project-action 'projectile-dired))
 
 (require 'init-dired)
 
