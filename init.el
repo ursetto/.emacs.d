@@ -4,8 +4,10 @@
   (load (locate-user-emacs-file "early-init.el")))
 
 (setq inhibit-startup-screen t)
+(defun display-startup-echo-area-message () (message nil)) ;; clear minibuffer on startup
 (setq initial-major-mode 'text-mode)
 (setq initial-scratch-message ";; Scratch buffer\n\n") ;; For elisp, use M-x ielm or M-x lisp-interaction-mode
+(fset 'yes-or-no-p 'y-or-n-p)  ;; Prompt y/n instead of yes/no.
 
 ;; Local, non-packaged software. Customizations may immediately require
 ;; local features (session-use-package is an example) so do this first.
@@ -87,7 +89,44 @@
 (use-package session
   :ensure nil   ; don't grab from melpa
   :straight nil
-  :init (add-hook 'after-init-hook 'session-initialize))
+  :init
+  ;; Init 'session only for saving history and rings. save-place-mode and recentf will
+  ;; do the job of 'places, and 'keys and 'menus are not needed. smex saves M-x history.
+  ;; Note 'de-saveplace (the default) will disable save-place-mode.
+  (setq session-initialize '(session))     ; does not work in :custom
+  :hook (after-init . session-initialize))
+
+(use-package recentf
+  :straight nil :ensure nil
+  :defer 1
+  :custom
+  (recentf-max-menu-items 200)
+  (recentf-max-saved-items 200)
+  (recentf-exclude '((expand-file-name package-user-dir)
+                     ".cache"
+                     "bookmarks"
+                     "cache"
+                     "ido.*"
+                     "recentf"
+                     "undo-tree-hist"
+                     "COMMIT_EDITMSG\\'"))
+  :config
+  ;; (setq recentf-keep '(file-remote-p file-readable-p))  ; Uncomment only if tramp hangs.
+
+  ;; Keep noisy recentf cleanup and read/write messages out of the minibuffer.
+  (defadvice recentf-cleanup (around silence activate)
+    (let ((inhibit-message t))  ; emacs >= 25.1
+      ad-do-it))
+  (defadvice recentf-load-list (around silence activate)
+    (let ((inhibit-message t))
+      ad-do-it))
+  (defadvice recentf-save-list (around silence activate)
+    (let ((inhibit-message t))
+      ad-do-it))
+  (recentf-mode))
+
+(save-place-mode 1)
+;; ;; (setq save-place-forget-unreadable-files nil)
 
 (use-package edit-indirect
   ;; C-c C-c : commit     C-c C-k : abort     C-x C-s : update and continue
@@ -95,9 +134,12 @@
   ;; ability to autoselect region for editing when inside existing one.
   :bind (("C-x n e" . edit-indirect-region)))
 
-(use-package which-key    ;; Display popup key bindings. Globally useful.
+(use-package which-key    ;; Display popup key bindings.
   :defer 1
   :diminish
+  :custom
+  (which-key-idle-delay 0.5) ; Long enough to avoid flashing, short enough to avoid waiting.
+  (which-key-idle-secondary-delay 0) ; Once the display is up, show other maps immediately.
   :config
   (which-key-mode t))
 
@@ -114,6 +156,9 @@
          ("C-^" . crux-top-join-line)   ; Like M-^, but join next line to this one. M-j (really Super-J) works too.
          ("M-j" . crux-top-join-line)   ; (Testing.) This overrides default-indent-new-line (which I don't use).
                                         ; C-k at EOL does a join already, except in paredit mode.
+         ;; Will use ido completion if available. C-x C-r also reasonable.
+         ;; Projectile recentf is on `C-c p e`, so prefer `C-c e` to `C-c f`.
+         ("C-c e" . crux-recentf-find-file)
          )
   :init
   (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
@@ -134,8 +179,7 @@
 (set-language-environment "UTF-8")
 (global-font-lock-mode 1)
 (setq echo-keystrokes 0.1)
-(icomplete-mode 1)              ;; Completion of non-ido things like C-h v, C-h f
-;; (iswitchb-mode t)            ;; Switch between buffers using substrings (using ido-mode instead)
+;; (icomplete-mode 1)              ;; Use ido-ubiquitous instead. icomplete doesn't play well with C-x C-f C-f.
 ;; Ignore these extensions during filename completion (works with ido and others).
 (add-to-list 'completion-ignored-extensions "~/")
 (add-to-list 'completion-ignored-extensions ".retry")
@@ -305,23 +349,37 @@ You can remove all indentation from a region by giving a large negative ARG."
 ;;        C-t (toggle regexp match)
 ;;        TAB/? (full completion list, when no completions)
 
+;; Note ido and its various helper modes are fairly heavyweight to load.
 (use-package ido
   :ensure nil ; not a package
   :defer 1
   :config
-  (ido-mode t)                               ;; supersedes iswitchb-mode
+  (ido-mode 1)                               ;; supersedes iswitchb-mode
+  (ido-everywhere 1)
+  (use-package ido-completing-read+)
+  (ido-ubiquitous-mode 1)
+  (use-package flx-ido)
+  (flx-ido-mode 1)
+  (use-package ido-vertical-mode
+    :config
+    ;; Avoid displaying bright red bars during ido vertical search.
+    (add-hook 'minibuffer-setup-hook (lambda () (setq show-trailing-whitespace nil)))
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil)
   (setq ido-enable-tramp-completion t)
+  ;; (setq ido-use-virtual-buffers t) ; requires recentf
   ;; (setq ido-max-prospects 12)             ;; max # of matching items
   ;; (setq ido-show-dot-for-dired t)         ;; Interferes with last directory RET traversal --
   ;;                                         ;; C-j or C-d is better option to get into dired.
   ;; (setq ido-enable-dot-prefix t)          ;; Initial . forces prefix match. If off, can match exts
-  ;;(ido-ubiquitous-mode t)                    ;; (use ido-completing-read+ now: https://benaiah.me/posts/using-ido-emacs-completion/)
-  ;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
+    ;; ido will obey completion-ignored-extensions (when ido-ignore-extensions is t, the default).
 )
 
 ;;;; smex
 
-(use-package smex
+(use-package smex  ;; works with ido
   :bind
   (("M-x" . smex)
    ("C-c M-x" . smex-major-mode-commands)
@@ -457,6 +515,27 @@ You can remove all indentation from a region by giving a large negative ARG."
   )
 
 (use-package yaml-mode :defer t)
+(use-package ag    ; Projectile has built-in ag support on C-c p s s.
+  :defer t
+  :custom
+  ;;(ag-reuse-buffers t
+  (ag-highlight-search t))
+;; TODO: I'd like a way to switch to a buffer in an open project, without having to select
+;; a file.
+(use-package projectile
+  ;; :bind (:map projectile-mode-map
+  ;;             ("C-c p" . projectile-command-map))
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :config
+  (projectile-mode +1)
+  ;; Ideally, I would like switching to an open project to bring up the project buffer or
+  ;; ibuffer list. This needs a bit of code as switch-project-action is called for all
+  ;; switching.  Unfortunately, there is a small bug where projectile-switch-to-buffer in
+  ;; this action (or projectile-commander's "b" option) will include the current buffer as
+  ;; the first result. For now, just call dired on the project root until I gain more
+  ;; experience.
+  ;; Note: projectile-commander can be reached with C-u prefix.
+  (setq projectile-switch-project-action 'projectile-dired))
 
 (require 'init-dired)
 
