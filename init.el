@@ -146,8 +146,8 @@
 (use-package crux
   :bind (("C-a" . crux-move-beginning-of-line)
          ("C-x 4 t" . crux-transpose-windows) ; only works intuitively with 2 windows
-         ("C-c R" . crux-rename-file-and-buffer)
-         ("C-c D" . crux-delete-file-and-buffer)
+         ("C-c R" . crux-rename-file-and-buffer) ; C-x C-r also reasonable
+         ("C-c D" . crux-delete-file-and-buffer) ; C-x C-d also reasonable
          ;;("C-k" . crux-smart-kill-line) ; inside line kills to EOL, again kills whole line
          ("C-k" . crux-kill-and-join-forward) ; inside line kill to EOL, again joins next line (like C-k C-^)
          ("C-c DEL" . crux-kill-line-backwards) ; can't do C-DEL on tty
@@ -156,12 +156,13 @@
          ("C-^" . crux-top-join-line)   ; Like M-^, but join next line to this one. M-j (really Super-J) works too.
          ("M-j" . crux-top-join-line)   ; (Testing.) This overrides default-indent-new-line (which I don't use).
                                         ; C-k at EOL does a join already, except in paredit mode.
-         ;; Will use ido completion if available. C-x C-r also reasonable.
+         ;; Will use ido completion if available. C-x C-r also reasonable (but might be used for rename).
          ;; Projectile recentf is on `C-c p e`, so prefer `C-c e` to `C-c f`.
          ("C-c e" . crux-recentf-find-file)
          )
   :init
   (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
+  (defalias 'delete-file-and-buffer #'crux-delete-file-and-buffer)
   :defer 1   ; Due to the advice in :config, this can't be deferred indefinitely.
   :config
   (crux-with-region-or-buffer untabify)
@@ -276,23 +277,6 @@ work properly when arg given."
   (interactive "r")
   (setq killed-rectangle (extract-rectangle start end)))
 (bind-key "C-x r M-w" 'my-copy-rectangle)
-
-(defun delete-file-and-buffer (&optional no-confirm-p)
-  "Delete the file associated with the current buffer, and kill the buffer.
-If it is not a file buffer, nothing happens.
-
-When no-confirm-p is t (or called with C-u), does not ask for confirmation."
-  (interactive "P")
-  (let ((filename (buffer-file-name)))
-    (if filename
-        (when (or no-confirm-p
-                  (y-or-n-p (concat "Delete " filename)))
-          (progn
-            (delete-file filename)
-            (message "Deleted %s" filename)
-            (kill-buffer)))
-      (message "No file associated with this buffer"))))
-(bind-key "C-x C-d" 'delete-file-and-buffer)   ;; override list-directory
 
 ;; Indent-rigidly doesn't insert space in blank lines.
 (defun indent-rigidly-even-when-blank (start end arg)
