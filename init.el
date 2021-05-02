@@ -168,7 +168,7 @@
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-line comment-or-uncomment-region))
 
-(use-package discover-my-major
+(use-restricted-package discover-my-major
   :bind (("C-h C-m" . discover-my-major)
          ("C-h M-m" . discover-my-mode)))
 (use-package idle-highlight-mode :defer t)
