@@ -27,6 +27,7 @@ package-quickstart.el
 .lsp-session-v1
 tramp
 .session
+ido.last
 
 straight
 !straight/versions/
