@@ -70,7 +70,7 @@
 ;; so you can can reenable it in a mode hook for those.
 (setq vc-handled-backends nil)
 
-(use-package indent-tools
+(use-restricted-package indent-tools
   :bind (("C-c >" . indent-tools-hydra/body))
   :config (use-package s)  ;; Required for up/down motion; not autoloaded
   )
