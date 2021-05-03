@@ -26,4 +26,21 @@
 (setq use-package-compute-statistics t)  ; M-x use-package-report
 (use-package diminish)
 
+(defvar zb/straight-restricted-environment
+  (and (or (getenv "https_proxy")
+           (getenv "HTTPS_PROXY")
+           (getenv "http_proxy")
+           (getenv "HTTP_PROXY"))
+       t))
+(defmacro use-restricted-package (&rest body)
+  "Conditionally use-package based on the value of zb/straight-restricted-environment.
+Intended for packages unreachable through a restrictive corporate proxy;
+generally, packages not on GitHub. You'll need to make sure skipping the
+package doesn't break your code."
+  `(if (not zb/straight-restricted-environment)
+       (use-package ,@body)
+     (let ((inhibit-message t))
+       (message "Skipped restricted package %s"
+		(quote ,(car body))))))
+
 (provide 'init-package)

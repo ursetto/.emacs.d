@@ -20,7 +20,7 @@
 
 ;;;; paredit
 
-(use-package paredit
+(use-restricted-package paredit
   :commands paredit-mode
   :hook
   ((scheme-mode emacs-lisp-mode)

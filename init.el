@@ -70,7 +70,7 @@
 ;; so you can can reenable it in a mode hook for those.
 (setq vc-handled-backends nil)
 
-(use-package indent-tools
+(use-restricted-package indent-tools
   :bind (("C-c >" . indent-tools-hydra/body))
   :config (use-package s)  ;; Required for up/down motion; not autoloaded
   )
@@ -168,7 +168,7 @@
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-line comment-or-uncomment-region))
 
-(use-package discover-my-major
+(use-restricted-package discover-my-major
   :bind (("C-h C-m" . discover-my-major)
          ("C-h M-m" . discover-my-mode)))
 (use-package idle-highlight-mode :defer t)
