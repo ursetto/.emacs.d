@@ -1,10 +1,3 @@
-;; For unknown reason, many of the font faces contained (min-colors
-;; 88) which displays just "white" on an Apple terminal.  I deleted
-;; these by hand.
-
-;; Also the colors require the bold attribute to display bright
-;; enough in a terminal--this could screw up Aquamacs if set.
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,9 +30,6 @@
      ("by mode" bs--sort-by-mode-stable "Mode" region)
      ("by filename" bs--sort-by-filename-stable-empty-end "File" region)))
  '(cperl-invalid-face nil)
- '(filesets-data
-   '(("main"
-      (:files "/Users/jim/doc/to-read.txt" "/Users/jim/.emacs"))))
  '(fringe-indicators 'empty nil (fringe))
  '(fringe-mode '(1 . 8) nil (fringe))
  '(glasses-face 'bold)
@@ -56,11 +46,10 @@
    '("~/business/forms-and-payments.txt" "~/doc/to-read.txt" "~/doc/OSX.txt" "~/doc/todo.txt"))
  '(package-selected-packages
    '(paredit outline-magic filladapt which-key yaml-mode use-package tuareg magit merlin org elpy flycheck-rust gnu-elpa-keyring-update company-lsp lsp-mode indent-tools hydra ace-window avy esup cargo company-quickhelp company company-ghci auto-complete utop smex ido-ubiquitous idle-highlight-mode haskell-mode erlang csv-mode ahg))
- '(quack-default-program "\"~/scheme/xcode/Currency Converter/runapp\"")
  '(quack-fontify-style 'plt)
  '(quack-pretty-lambda-p t)
  '(quack-programs
-   '("~/local/chicken/5.0.0/bin/csi" "~/local/chicken-4.12.0/bin/csi" "~/local/chicken/4.8.0.6/bin/csi" "~/local/chicken-4.x/bin/csi" "\"~/scheme/xcode/Currency Converter/runapp\"" "./csi" "/Users/jim/scheme/sdl/repl" "/Users/jim/tmp/sdl-gears" "/usr/bin/perl -d -e2" "/usr/bin/perl -d aacraid.pl" "/usr/bin/perl -d audit-all.pl" "/usr/bin/perl -d dmi.pl" "/usr/local/bin/csi" "/usr/local/bin/csi -:a20" "/usr/local/bin/csi -:a25" "/usr/local/bin/csi -i" "/usr/local/bin/ghci" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "~/dl/chicken-1.88/csi" "~/local/bin/csi" "~/local/bin/csi " "~/local/bin/csi -:d" "~/local/bin/csi -:d -:f32" "~/local/bin/csi -:d -:f4" "~/local/bin/csi -:d -:f8192" "~/local/bin/csi -:f16384" "~/local/bin/csi -:f2500" "~/local/bin/csi -:f3 -:d" "~/local/bin/csi -:f5600 -:d" "~/local/bin/csi -:f5700 -:d" "~/local/bin/csi -:f6000" "~/local/bin/csi -:f6000 -:d" "~/local/bin/csi -:f8192" "~/local/bin/csi -no-init" "~/local/bin/csi -syntax" "~/local/bin/csi4 -no-init -:a25" "~/local/bin/ghci" "~/local/chicken-4.6.6/bin/csi" "~/local/chicken-4.6/bin/csi" "~/local/chicken-4.7.0-st-clang/bin/csi" "~/local/chicken-4.7.0-st/bin/csi" "~/local/chicken-4.8/bin/csi" "~/local/chicken-4/bin/csi" "~/local/chicken-hygienic/bin/csi -:a20" "~/local/chicken/4.8.0.1/bin/csi" "~/local/chicken/4.x/bin/csi" "~/scheme/chicken-core/inst/bin/csi" "~/scheme/xcode" "~/scheme/xcode/Currency Converter/runapp" "~/scheme/xcode/CurrencyConverter/runapp" "~/scheme/xcode/Currency\\ Converter/runapp" "~/scheme/xcode/color-view/runapp"))
+   '("~/local/chicken/5.2.0/bin/csi" "~/local/chicken-4.12.0/bin/csi" "~/local/chicken-4.x/bin/csi" "~/local/chicken/5/bin/csi" "csi"))
  '(quack-remap-find-file-bindings-p nil)
  '(quack-run-scheme-always-prompts-p t)
  '(safe-local-variable-values
