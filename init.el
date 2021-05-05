@@ -215,7 +215,7 @@
 (bind-key "C-c z" 'zap-up-to-char)     ;; requires 'misc
 (bind-key "C-c C-j" 'imenu)            ;; jump to definition in this file (python binding; also used for org-goto)
 (bind-key "C-c b" (lambda () (interactive) (switch-to-buffer nil)))  ;; switch to previous buffer
-(bind-key "C-c d" (lambda () (interactive) (diff-buffer-with-file (current-buffer))))
+(bind-key "C-c d" (lambda () (interactive) (diff-buffer-with-file) (select-window (get-buffer-window "*Diff*"))))
 (bind-key "C-c r" 'revert-buffer)      ;; todo: just say "No changes" if so
 
 (require 'init-window)
