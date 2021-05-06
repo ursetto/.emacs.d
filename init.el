@@ -75,9 +75,16 @@
   :config (use-package s)  ;; Required for up/down motion; not autoloaded
   )
 (use-package undo-tree
-  ;; C-x u to visualize; p/n/b/f to navigate; d to diff; t for timestamps; C-q to abort; M-_ to redo
+  ;; C-x u to visualize; p/n/b/f to navigate; d to diff; t for timestamps; C-q to abort
   ;; Also see ~/.emacs.d/elpa/undo-tree-readme.txt
   :diminish
+  :bind (:map undo-tree-map
+              ;; 'undo' is remapped to undo-tree-undo, so we could rebind 'undo' before
+              ;; using this package. But there is no 'redo' to rebind. So, bind both here.
+              ;; M-u overrides uppercase-word, though that is available via C-SPC e u,
+              ;; and if needed could be bound to a hydra on `M-c`, freeing M-l as well.
+              ("M-u" . undo-tree-undo)  ;; frees C-_ and C-/
+              ("M-U" . undo-tree-redo)) ;; frees M-_ and C-? (untypable on TTY)
   :defer 1
   :config (global-undo-tree-mode))
 
