@@ -538,6 +538,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 (require 'init-ocaml)
 (require 'init-rust)
 (require 'init-haskell)
+(require 'init-go)
 ;(require 'init-tex)
 
 ;;;; artist
