@@ -166,6 +166,7 @@
          ;; Will use ido completion if available. C-x C-r also reasonable (but might be used for rename).
          ;; Projectile recentf is on `C-c p e`, so prefer `C-c e` to `C-c f`.
          ("C-c e" . crux-recentf-find-file)
+         ("C-c 2" . crux-duplicate-current-line-or-region)
          )
   :init
   (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
