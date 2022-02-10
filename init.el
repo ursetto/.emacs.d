@@ -438,6 +438,10 @@ You can remove all indentation from a region by giving a large negative ARG."
   ;; should be written to be syntactically compatible with Python 3 anyway.
   (setq elpy-rpc-python-command "python3"))
 
+;; Hashicorp configuration language
+(use-package hcl-mode
+  :defer t)
+
 ;;;; Gforth
 
 ;; forth-mode.el is gforth.el from the gforth distribution, not available as package.
@@ -540,6 +544,7 @@ You can remove all indentation from a region by giving a large negative ARG."
 (require 'init-rust)
 (require 'init-haskell)
 (require 'init-go)
+(require 'init-asm)
 ;(require 'init-tex)
 
 ;;;; artist
