@@ -442,6 +442,9 @@ You can remove all indentation from a region by giving a large negative ARG."
 (use-package hcl-mode
   :defer t)
 
+(use-package typescript-mode
+  :defer t)
+
 ;;;; Gforth
 
 ;; forth-mode.el is gforth.el from the gforth distribution, not available as package.
